@@ -1,0 +1,6 @@
+#環境変数・秘密鍵ファイルはGitに含めない
+tts-node/.env
+tts-node/tts-credentials.json
+
+#Node_modules も含めない（容量が大きくGitには不要）
+tts-node/node_modules/

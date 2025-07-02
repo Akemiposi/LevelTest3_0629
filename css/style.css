@@ -1,0 +1,185 @@
+/* 全体の基本設定 */
+body {
+  font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  line-height: 1.6;
+  background-color: #f9f9f9;
+  color: #333;
+  padding: 20px;
+  margin: 0;
+}
+
+/* 中央寄せ＋白背景カード風 */
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+/* 見出し */
+h1 {
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+/* フィールドセット（枠付きブロック） */
+fieldset {
+  margin-bottom: 30px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+/* フィールドセットのタイトル */
+legend {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #2c3e50;
+  padding: 0 10px;
+}
+
+/* テキスト・日付入力 */
+.inline-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap; /* スマホ対応 */
+  margin-bottom: 15px;
+}
+
+.inline-field label {
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.inline-field input.long {
+  width: 200px;
+}
+
+.inline-field input.short {
+  width: 50px;
+  text-align: center;
+}
+
+input[type="text"],
+input[type="date"] {
+  margin: 5px 0 15px;
+  padding: 8px 12px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  width: 200px;
+  font-size: 1rem;
+}
+
+/* テーブルの設定 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* 回答ボタンのグループ */
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  height: 100%;
+  padding: 8px 0;
+}
+
+/* 回答ボタン */
+.answerBtn {
+  padding: 10px 20px;
+  min-width: 90px;
+  border: 2px solid #888;
+  border-radius: 6px;
+  background-color: #f5f5f5;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.answerBtn:hover {
+  background-color: #eee;
+}
+
+.answerBtn.selected {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+/* 提出ボタン */
+button[type="submit"] {
+  display: block;
+  margin: 30px auto 0;
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color: #27ae60;
+}
+
+/* フッター */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 0.9rem;
+  color: #999;
+}
+
+/* 翻訳関連 */
+label[for="language-select"] {
+  display: inline-block;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+#language-select {
+  font-size: 1rem;
+  padding: 8px 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fdfdfd;
+  color: #333;
+}
+
+#translated-instruction {
+  background-color: #eaf4fe;
+  border-left: 6px solid #228be6;
+  padding: 10px 15px;
+  margin: 5px 0 15px 0;
+  border-radius: 8px;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
