@@ -79,6 +79,7 @@ function mark($v) {
     .left-align { text-align: left; }
     th { background: #f0f0f0; }
   </style>
+      <link rel="icon" type="image/png" href="img/favicon.png">
    <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/style.css" />
 </head>

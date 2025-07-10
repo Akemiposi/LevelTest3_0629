@@ -19,7 +19,8 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     table { border-collapse: collapse; width: 100%; }
     th, td { padding: 8px; border: 1px solid #ccc; text-align: center; }
     th { background-color: #f2f2f2; }
-  </style>
+  </style>    <link rel="icon" type="image/png" href="img/favicon.png">
+
    <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/style.css" />
 </head>
