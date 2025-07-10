@@ -284,4 +284,29 @@ label[for="language-select"] {
   font-weight: bold;
 }
 
+/* 修正・削除ボタン */
+.edit-btn {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #2e7cb1;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+.edit-btn:hover {
+  background-color: #2980b9;
+}
+
+.delete-btn {
+  padding: 6px 12px;
+  background-color: #f86757;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+.delete-btn:hover {
+  background-color: #9c3e33;
+}
+
 
