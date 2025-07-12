@@ -89,18 +89,18 @@ foreach ($curricula as $row) {
 
 <h2>指導開始コマの提案</h2>
 <?php if ($start_point): ?>
-  <p>以下のカテゴリーからの学習をおすすめします：</p>
+  <p>以下のコマからの指導をおすすめします：</p>
   <ul>
-    <li>No：<?= $start_point['no'] ?>（ID: <?= $start_point['id'] ?>）</li>
+    <li>コマNo：<?= $start_point['no'] ?>（ID: <?= $start_point['id'] ?>）</li>
     <li>主な内容：<?= $start_point['instruction'] ?></li>
     <li>対応問題：<?= $start_point['test_compare'] ?></li>
     <li>正答率：<?= $start_point['correct_rate'] ?>%</li>
   </ul>
 <?php else: ?>
-  <p>すべてにおいて高得点でした。応用的な内容から指導可能です。</p>
+  <p>すべてのコマにおいて高得点でした。応用的な内容から指導可能です。</p>
 <?php endif; ?>
 
-<h2>正答率一覧</h2>
+<h2>コマ別正答率一覧</h2>
 <table>
   <tr>
     <th>コマID</th><th>No</th><th>指導内容</th><th>対応問題</th><th>正解数</th><th>正答率</th>

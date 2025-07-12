@@ -309,4 +309,26 @@ label[for="language-select"] {
   background-color: #9c3e33;
 }
 
+.hiragana-table,
+.katakana-table {
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  width: auto;
+  table-layout: fixed;
+}
 
+.hiragana-table td,
+.katakana-table td {
+  width: 40px;
+  height: 40px;
+  font-size: 1.4rem;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid #ccc;
+  padding: 0;
+}
+
+.toggle-cell.selected {
+  background-color: #e0f7ff;
+  border: 2px solid blue;
+}
