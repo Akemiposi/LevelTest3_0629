@@ -135,36 +135,37 @@ $q0_3_answers = array_map(fn($i) => $row["q0_3_$i"], range(1, 3));
       <h2>Q0-4：書く問題２ーひらがな・カタカナ</h2>
       <p>選ばれたひらがな：
         <input type="text" name="selected_hiragana" id="selected_hiragana"
-          value="<?= h($row['selected_hiragana']) ?>" size="120">
+          value="<?= h($row['selected_hiragana']) ?>" size="100">
       </p>
 
       <p>選ばれなかったひらがな：
         <input type="text" name="unselected_hiragana" id="unselected_hiragana"
-          value="<?= h($row['unselected_hiragana']) ?>" size="120">
+          value="<?= h($row['unselected_hiragana']) ?>" size="100">
       </p>
 
       <p>選ばれたカタカナ：
         <input type="text" name="selected_katakana" id="selected_katakana"
-          value="<?= h($row['selected_katakana']) ?>" size="120">
+          value="<?= h($row['selected_katakana']) ?>" size="100">
       </p>
 
       <p>選ばれなかったカタカナ：
         <input type="text" name="unselected_katakana" id="unselected_katakana"
-          value="<?= h($row['unselected_katakana']) ?>" size="120">
+          value="<?= h($row['unselected_katakana']) ?>" size="100">
       </p>
-      <p>ひらがなスコア：<input type="text" name="hiragana_score" id="hiragana_score" value="<?= h($row['hiragana_score']) ?>" onchange="updateScore()"></p>
-      <p>カタカナスコア：<input type="text" name="katakana_score" id="katakana_score" value="<?= h($row['katakana_score']) ?>" onchange="updateScore()"></p>
-      <br>
-      <p><button type="button" onclick="updateScore()">Q0-4 再計算する</button></p>
-      <br>
+
+      <p>ひらがなスコア：<input type="text" name="hiragana_score" id="hiragana_score" value="<?= h($row['hiragana_score']) ?>"></p>
+      <p>カタカナスコア：<input type="text" name="katakana_score" id="katakana_score" value="<?= h($row['katakana_score']) ?>"></p>
+
+    <br>
+
       <p>Q0-1スコア：<input type="text" name="q0_1_score" id="q0_1_score" value="<?= h($row['q0_1_score']) ?>" onchange="updateScore()"></p>
       <p>Q0-2スコア：<input type="text" name="q0_2_score" id="q0_2_score" value="<?= h($row['q0_2_score']) ?>" onchange="updateScore()"></p>
       <p>Q0-3スコア：<input type="text" name="q0_3_score" id="q0_3_score" value="<?= h($row['q0_3_score']) ?>" onchange="updateScore()"></p>
-      <p>Q0-4スコア：<input type="text" name="q0_4_score" id="q0_4_score" value="<?= h($row['q0_4_score']) ?>" onchange="updateScore()"></p>
+      <p>Q0-4スコア：<input type="text" name="q0_4_score" id="q0_4_score" value="<?= h($row['q0_4_score']) ?>"></p>
+      <p>総合スコア：<input type="text" name="total_score" id="total_score" value="<?= h($row['total_score']) ?>"></p>
 
+      <p><button type="button" onclick="updateScore()">再計算</button></p>
 
-      <br>
-      <p>総合スコア：<input type="text" name="total_score" id="total_score" value="<?= h($row['total_score']) ?>" onchange="updateScore()"></p>
 
       <p>
         <button type="submit">保存する</button>

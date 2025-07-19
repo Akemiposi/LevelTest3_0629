@@ -65,8 +65,9 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <th>名前</th>
       <th>性別</th>
       <th>言語</th>
-      <th>合計</th>
-      <th>詳細</th>
+      <th>L0詳細</th>
+      <th>L1詳細</th>
+      <th>L2詳細</th>
     </tr>
 
     <?php foreach ($results as $row): ?>
@@ -78,7 +79,6 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <td><?= h($row['name']) ?></td>
         <td><?= h($row['gender']) ?></td>
         <td><?= h($row['language']) ?></td>
-        <td><?= h($row['total_score']) ?></td>
         <td><a href="detail.php?id=<?= h($row['id']) ?>">詳細</a></td>
       </tr>
     <?php endforeach; ?>

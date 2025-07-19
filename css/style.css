@@ -132,7 +132,7 @@ th {
 }
 
 /* 回答ボタン */
-.answerBtn {
+button.answerBtn {
   padding: 10px 20px;
   min-width: 90px;
   border: 2px solid #888;
@@ -144,11 +144,11 @@ th {
   text-align: center;
 }
 
-.answerBtn:hover {
+button.answerBtn:hover {
   background-color: #eee;
 }
 
-.answerBtn.selected {
+button.answerBtn.selected {
   background-color: #007bff;
   color: white;
   border-color: #007bff;
@@ -209,80 +209,63 @@ label[for="language-select"] {
   font-size: 1rem;
 }
 
-/* ひらがな */
-
-.hiragana-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  table-layout: fixed;
-}
-
-.hiragana-table td {
-  border: 1px solid #aaa;
-  width: 60px;
-  height: 60px;
-  text-align: center;
-  font-size: 1.5rem;
-  cursor: pointer;
-  background-color: #fff;
-  padding: 0;
-}
-
-.hiragana-table td.gray {
-  background-color: #ccc;
-  pointer-events: none;
-}
-
-.hiragana-table td.active {
-  background-color: #ffffcc;
-  font-weight: bold;
-}
-
-/* カタカナ */
-
+.hiragana-table,
 .katakana-table {
-  width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-bottom: 20px;
   table-layout: fixed;
 }
 
+
+.hiragana-table td,
 .katakana-table td {
-  border: 1px solid #aaa;
-  width: 60px;
-  height: 60px;
+   width: 40px;
+  height: 40px;
+  font-size: 1.4rem;
   text-align: center;
-  font-size: 1.5rem;
-  cursor: pointer;
-  background-color: #fff;
+  vertical-align: middle;
+  border: 1px solid #ccc;
   padding: 0;
-}
-
-.katakana-table td.gray {
-  background-color: #ccc;
-  pointer-events: none;
-}
-
-.katakana-table td.active {
-  background-color: #ffffcc;
-  font-weight: bold;
 }
 
 .toggle-cell {
+  font-family: "UD Digi Kyokasho NP-B", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
   display: inline-block;
   width: 100%;
   height: 100%;
-  line-height: 60px;
+  line-height: 4rem;
+  text-align: center;
+  /* margin: 6px; */
+  cursor: pointer;
+  /* border-radius: 4px; */
   user-select: none;
-}
-
-
-.toggle-cell.selected {
-  background-color: #d0f0ff;
-  border-radius: 5px;
   font-weight: bold;
+  vertical-align: middle;
 }
+
+/* grayセル用 */
+td.gray {
+  background-color: #ccc;
+  pointer-events: none;
+}
+
+/* 選択済み（青） */
+.toggle-cell.selected {
+  background-color: #4fa6f7;
+  color: #fff;
+}
+
+/* 未選択（赤） */
+/* .toggle-cell.unselected {
+  background-color: #f78c6b;
+  color: #111;
+} */
+
+/* 押せないマス（表示専用） */
+.toggle-cell.readonly {
+  cursor: default;
+}
+
 
 /* 修正・削除ボタン */
 .edit-btn {
@@ -309,26 +292,6 @@ label[for="language-select"] {
   background-color: #9c3e33;
 }
 
-.hiragana-table,
-.katakana-table {
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  width: auto;
-  table-layout: fixed;
-}
 
-.hiragana-table td,
-.katakana-table td {
-  width: 40px;
-  height: 40px;
-  font-size: 1.4rem;
-  text-align: center;
-  vertical-align: middle;
-  border: 1px solid #ccc;
-  padding: 0;
-}
 
-.toggle-cell.selected {
-  background-color: #e0f7ff;
-  border: 2px solid blue;
-}
+

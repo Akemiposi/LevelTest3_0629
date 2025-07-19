@@ -279,7 +279,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="5">言える</button>
                   <button type="button" class="answerBtn" data-value="0">言えない</button>
                 </div>
-                <input type="hidden" name="q0_1_1" value="" required />
+                <input type="hidden" name="q0_1_1" id="q0_1_1" value="" required />
               </td>
             </tr>
 
@@ -290,7 +290,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="5">言える</button>
                   <button type="button" class="answerBtn" data-value="0">言えない</button>
                 </div>
-                <input type="hidden" name="q0_1_2" value="" required />
+                <input type="hidden" name="q0_1_2" id="q0_1_2" value="" required />
               </td>
             </tr>
 
@@ -301,7 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="5">言える</button>
                   <button type="button" class="answerBtn" data-value="0">言えない</button>
                 </div>
-                <input type="hidden" name="q0_1_3" value="" required />
+                <input type="hidden" name="q0_1_3" id="q0_1_3" value="" required />
               </td>
             </tr>
 
@@ -312,7 +312,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="5">言える</button>
                   <button type="button" class="answerBtn" data-value="0">言えない</button>
                 </div>
-                <input type="hidden" name="q0_1_4" value="" required />
+                <input type="hidden" name="q0_1_4" id="q0_1_4" value="" required />
               </td>
             </tr>
 
@@ -323,7 +323,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="5">言える</button>
                   <button type="button" class="answerBtn" data-value="0">言えない</button>
                 </div>
-                <input type="hidden" name="q0_1_5" value="" required />
+                <input type="hidden" name="q0_1_5" id="q0_1_5" value="" required />
               </td>
             </tr>
 
@@ -334,7 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="5">言える</button>
                   <button type="button" class="answerBtn" data-value="0">言えない</button>
                 </div>
-                <input type="hidden" name="q0_1_6" value="" required />
+                <input type="hidden" name="q0_1_6" id="q0_1_6" value="" required />
               </td>
             </tr>
 
@@ -345,14 +345,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="5">言える</button>
                   <button type="button" class="answerBtn" data-value="0">言えない</button>
                 </div>
-                <input type="hidden" name="q0_1_7" value="" required />
+                <input type="hidden" name="q0_1_7" id="q0_1_7" value="" required />
               </td>
             </tr>
-            <input type="hidden" id="q0_1_score" name="q0_1_score" value="0">
           </tbody>
         </table>
 
-
+        <p>Q0-1スコア: <span id="q0_1_score_display">0</span>点</p>
+        <input type="hidden" id="q0_1_score" name="q0_1_score" value="0">
 
       </fieldset>
 
@@ -377,7 +377,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="2">読める</button>
                   <button type="button" class="answerBtn" data-value="0">読めない</button>
                 </div>
-                <input type="hidden" name="q0_2_1" value="" required />
+                <input type="hidden" name="q0_2_1" id="q0_2_1" value="" required />
               </td>
             </tr>
             <tr>
@@ -387,7 +387,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="2">読める</button>
                   <button type="button" class="answerBtn" data-value="0">読めない</button>
                 </div>
-                <input type="hidden" name="q0_2_2" value="" required />
+                <input type="hidden" name="q0_2_2" id="q0_2_2" value="" required />
               </td>
             </tr>
             <tr>
@@ -397,7 +397,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="2">読める</button>
                   <button type="button" class="answerBtn" data-value="0">読めない</button>
                 </div>
-                <input type="hidden" name="q0_2_3" value="" required />
+                <input type="hidden" name="q0_2_3" id="q0_2_3" value="" required />
               </td>
             </tr>
             <tr>
@@ -407,7 +407,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="2">読める</button>
                   <button type="button" class="answerBtn" data-value="0">読めない</button>
                 </div>
-                <input type="hidden" name="q0_2_4" value="" required />
+                <input type="hidden" name="q0_2_4" id="q0_2_4" value="" required />
               </td>
             </tr>
             <tr>
@@ -417,7 +417,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="2">読める</button>
                   <button type="button" class="answerBtn" data-value="0">読めない</button>
                 </div>
-                <input type="hidden" name="q0_2_5" value="" required />
+                <input type="hidden" name="q0_2_5" id="q0_2_5" value="" required />
               </td>
             </tr>
             <tr>
@@ -427,7 +427,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="2">読める</button>
                   <button type="button" class="answerBtn" data-value="0">読めない</button>
                 </div>
-                <input type="hidden" name="q0_2_6" value="" required />
+                <input type="hidden" name="q0_2_6" id="q0_2_6" value="" required />
               </td>
             </tr>
             <tr>
@@ -437,7 +437,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="2">読める</button>
                   <button type="button" class="answerBtn" data-value="0">読めない</button>
                 </div>
-                <input type="hidden" name="q0_2_7" value="" required />
+                <input type="hidden" name="q0_2_7" id="q0_2_7" value="" required />
               </td>
             </tr>
             <tr>
@@ -447,7 +447,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="2">読める</button>
                   <button type="button" class="answerBtn" data-value="0">読めない</button>
                 </div>
-                <input type="hidden" name="q0_2_8" value="" required />
+                <input type="hidden" name="q0_2_8" id="q0_2_8" value="" required />
               </td>
             </tr>
             <tr>
@@ -457,7 +457,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="2">読める</button>
                   <button type="button" class="answerBtn" data-value="0">読めない</button>
                 </div>
-                <input type="hidden" name="q0_2_9" value="" required />
+                <input type="hidden" name="q0_2_9" id="q0_2_9" value="" required />
               </td>
             </tr>
             <tr>
@@ -467,12 +467,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="2">読める</button>
                   <button type="button" class="answerBtn" data-value="0">読めない</button>
                 </div>
-                <input type="hidden" name="q0_2_10" value="" required />
+                <input type="hidden" name="q0_2_10" id="q0_2_10" value="" required />
               </td>
             </tr>
-            <input type="hidden" id="q0_2_score" name="q0_2_score" value="0">
           </tbody>
         </table>
+
+        <p>Q0-2スコア: <span id="q0_2_score_display">0</span>点</p>
+        <input type="hidden" id="q0_2_score" name="q0_2_score" value="0">
       </fieldset>
 
       <fieldset>
@@ -496,7 +498,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="5">書ける</button>
                   <button type="button" class="answerBtn" data-value="0">書けない</button>
                 </div>
-                <input type="hidden" name="q0_3_1" value="" required />
+                <input type="hidden" name="q0_3_1" id="q0_3_1" value="" required />
               </td>
             </tr>
             <tr>
@@ -506,7 +508,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="5">書ける</button>
                   <button type="button" class="answerBtn" data-value="0">書けない</button>
                 </div>
-                <input type="hidden" name="q0_3_2" value="" required />
+                <input type="hidden" name="q0_3_2" id="q0_3_2" value="" required />
               </td>
             </tr>
             <tr>
@@ -516,12 +518,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <button type="button" class="answerBtn" data-value="5">書ける</button>
                   <button type="button" class="answerBtn" data-value="0">書けない</button>
                 </div>
-                <input type="hidden" name="q0_3_3" value="" required />
+                <input type="hidden" name="q0_3_3" id="q0_3_3" value="" required />
               </td>
             </tr>
-            <input type="hidden" id="q0_3_score" name="q0_3_score" value="0">
           </tbody>
         </table>
+
+        <p>Q0-3スコア: <span id="q0_3_score_display">0</span>点</p>
+        <input type="hidden" id="q0_3_score" name="q0_3_score" value="0">
+
       </fieldset>
 
       <fieldset>
@@ -605,7 +610,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="hidden" name="selected_hiragana" id="selected_hiragana">
         <input type="hidden" name="unselected_hiragana" id="unselected_hiragana">
         <br>
-
         <p class="translated-instruction">
           カタカナで書きましょう。空欄に当てはまるカタカナを書いてください。わからない時は、終わりにしてください。
 
@@ -682,12 +686,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="hidden" name="selected_katakana" id="selected_katakana">
         <input type="hidden" name="unselected_katakana" id="unselected_katakana">
 
+        <p>Q0-4スコア: <span id="q0_4_score_display">0</span>点</p>
         <input type="hidden" id="q0_4_score" name="q0_4_score" value="0">
 
       </fieldset>
 
+      <p>総合スコア: <span id="total_score_display">0</span>点</p>
       <input type="hidden" id="total_score" name="total_score" value="0">
-
 
       <br>
       <button type="submit">採点する</button>
