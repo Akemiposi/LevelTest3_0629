@@ -1,5 +1,5 @@
 <?php
-require_once('funcs.php');
+require_once('/../funcs.php');
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : -1;
 if ($id < 0) die('不正なIDです');
