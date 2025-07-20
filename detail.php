@@ -1,5 +1,5 @@
 <?php
-require_once('/../funcs.php');
+require_once __DIR__ . '/../funcs.php';
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : -1;
 if ($id < 0) die('不正なIDです');
@@ -90,6 +90,7 @@ $q0_3_answers = array_map(fn($i) => $row["q0_3_$i"], range(1, 3));
         言語：<input type="text" name="language" value="<?= h($row['language']) ?>">
       </p>
 
+
       <h2>Q0-1：聞く問題</h2>
       <table>
         <tr>
@@ -156,7 +157,7 @@ $q0_3_answers = array_map(fn($i) => $row["q0_3_$i"], range(1, 3));
       <p>ひらがなスコア：<input type="text" name="hiragana_score" id="hiragana_score" value="<?= h($row['hiragana_score']) ?>"></p>
       <p>カタカナスコア：<input type="text" name="katakana_score" id="katakana_score" value="<?= h($row['katakana_score']) ?>"></p>
 
-    <br>
+      <br>
 
       <p>Q0-1スコア：<input type="text" name="q0_1_score" id="q0_1_score" value="<?= h($row['q0_1_score']) ?>" onchange="updateScore()"></p>
       <p>Q0-2スコア：<input type="text" name="q0_2_score" id="q0_2_score" value="<?= h($row['q0_2_score']) ?>" onchange="updateScore()"></p>
@@ -186,6 +187,7 @@ $q0_3_answers = array_map(fn($i) => $row["q0_3_$i"], range(1, 3));
       性別：<?= h($row['gender']) ?>　
       言語：<?= h($row['language']) ?>
     </p>
+    <p>レベル０スコア<?= h($row['total_score']) ?> 点</p>
 
     <h2>Q0-1：聞く問題</h2>
     <table>

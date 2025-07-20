@@ -1,5 +1,5 @@
 <?php
-require_once('/../funcs.php');
+require_once __DIR__ . '/../funcs.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <form action="index.php" method="POST" onsubmit="return handleSubmit()">
 
-      <fieldset>
+    <fieldset>
         <legend>基本情報</legend>
         <div class="inline-field">
           <label for="name">学校名：</label>

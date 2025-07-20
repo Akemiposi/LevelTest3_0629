@@ -1,5 +1,5 @@
 <?php
-require_once('funcs.php'); // db_conn() と sql_error() を使用
+require_once __DIR__ . '/../funcs.php'; // db_conn() と sql_error() を使用
 
 // POSTでIDを受け取る
 $id = isset($_POST['id']) ? intval($_POST['id']) : -1;

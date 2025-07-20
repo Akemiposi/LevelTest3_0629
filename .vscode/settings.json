@@ -9,5 +9,10 @@
     "baseUri": "/",
     "proxyUri": "http://localhost:80/LevelTest3_0629/"
   },
-  "php.validate.executablePath": "/Applications/XAMPP/xamppfiles/bin/php-8.2.4"
+  "php.validate.executablePath": "/Applications/XAMPP/xamppfiles/bin/php-8.2.4",
+
+  "intelephense.environment.includePaths": [
+    "../"
+  ]
 }
+
