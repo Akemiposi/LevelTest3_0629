@@ -25,9 +25,9 @@ RewriteRule . /index.php [L]
 ErrorDocument 404 /404.html
 SetEnvIf Request_URI ".*" Ngx_Cache_NoCacheMode=off
 SetEnvIf Request_URI ".*" Ngx_Cache_StaticMode
-RewriteEngine On
-RewriteCond %{HTTPS} !on
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+# RewriteEngine On
+# RewriteCond %{HTTPS} !on
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 ErrorDocument 400 /400.html
 ErrorDocument 401 /401.html
 SetEnvIf Request_URI ".*" WpLoginNoLimit
@@ -38,3 +38,18 @@ SetEnvIf Request_URI ".*" AllowCountry
 SetEnvIf Request_URI ".*" AllowRestApi
 SetEnvIf Request_URI ".*" WpLoginNoLimit
 SetEnvIf Request_URI ".*" WpCommentNoLimit
+
+<FilesMatch "^\.env$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+<FilesMatch "^\.env\.production$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+<FilesMatch "tts-credentials\.json">
+  Order allow,deny
+  Deny from all
+</FilesMatch>

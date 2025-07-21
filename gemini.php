@@ -2,8 +2,8 @@
 header('Content-Type: application/json');
 
 // .envの読み込み（簡易）
-if (file_exists(__DIR__ . '/../.env')) {
-    $lines = file(__DIR__ . '/../.env');
+if (file_exists('.env')) {
+    $lines = file('.env');
     foreach ($lines as $line) {
         if (strpos(trim($line), '=') !== false) {
             putenv(trim($line));

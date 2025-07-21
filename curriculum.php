@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../funcs.php';
+require_once('./funcs.php');
 $pdo = db_conn();
 
 // --- データ取得 ---

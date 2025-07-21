@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../funcs.php'; // ← DB接続関数など
+require_once('./funcs.php'); // ← DB接続関数など
 $pdo = db_conn();
 
 $student_id = $_GET['id'] ?? null;

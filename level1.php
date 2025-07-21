@@ -3,7 +3,7 @@
 $student_id = $_GET['student'] ?? '';
 
 // DB接続（例：PDO）
-require_once __DIR__ . '/../funcs.php';
+require_once('./funcs.php');
 
 if ($student_id !== '') {
     $pdo = db_conn();
