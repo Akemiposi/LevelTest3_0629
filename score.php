@@ -42,7 +42,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
 
   <!-- ヘッダー -->
-   <header style="background-color:#2c3e50; padding:20px; text-align:center;">
+  <header style="background-color:#2c3e50; padding:20px; text-align:center;">
     <h1 style="color:white; font-size:2rem; margin:0;">結果一覧</h1>
   </header>
 
@@ -70,8 +70,9 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <th>L2詳細</th>
     </tr>
 
+    <tr>
     <?php foreach ($results as $row): ?>
-      <tr>
+
         <td><?= h($row['date']) ?></td>
         <td><?= h($row['school']) ?></td>
         <td><?= h($row['year']) ?></td>
@@ -79,14 +80,18 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <td><?= h($row['name']) ?></td>
         <td><?= h($row['gender']) ?></td>
         <td><?= h($row['language']) ?></td>
-        <td><a href="detail.php?id=<?= h($row['id']) ?>">詳細</a></td>
-      </tr>
-    <?php endforeach; ?>
+        <td><a href="detail.php?id=<?= h($row['id']) ?>"><?= h($row['total_score']) ?>点</a></td>
+        <td><a href="detail_q1.php?id=<?= h($row['id']) ?>"><?= h($row['q1_total_score']) ?>点</a></td>
+        <td><a href="detail_q2.php?id=<?= h($row['id']) ?>"><?= h($row['q2_total_score']) ?>点</a></td>
+
+        </tr>
+
+      <?php endforeach; ?>
   </table>
 
   <p><a href="index.php">← 戻る</a></p>
 
- <footer>@nihongo-note all right reserved.</footer>
+  <footer>@nihongo-note all right reserved.</footer>
 
   <script src="js/index.js"></script>
 </body>

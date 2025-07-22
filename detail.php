@@ -82,14 +82,21 @@ $q0_3_answers = array_map(fn($i) => $row["q0_3_$i"], range(1, 3));
       <input type="hidden" name="id" value="<?= h($row['id']) ?>">
 
       <p>
-        日付：<input type="text" name="date" value="<?= h($row['date']) ?>">　
-        学校：<input type="text" name="school" value="<?= h($row['school']) ?>">　
-        学年：<input type="text" name="year" value="<?= h($row['year']) ?>">　
-        組：<input type="text" name="class" value="<?= h($row['class']) ?>">　
-        性別：<input type="text" name="gender" value="<?= h($row['gender']) ?>">　
-        言語：<input type="text" name="language" value="<?= h($row['language']) ?>">
+        日付：<?= h($row['date']) ?>　
+        学校：<?= h($row['school']) ?>　
+        学年：<?= h($row['year']) ?>　
+        組：<?= h($row['class']) ?>　
+        性別：<?= h($row['gender']) ?>　
+        言語：<?= h($row['language']) ?>
       </p>
-
+      <!-- 修正不可だが送信される hidden input -->
+      <input type="hidden" name="date" value="<?= h($row['date']) ?>">
+      <input type="hidden" name="school" value="<?= h($row['school']) ?>">
+      <input type="hidden" name="year" value="<?= h($row['year']) ?>">
+      <input type="hidden" name="class" value="<?= h($row['class']) ?>">
+      <input type="hidden" name="name" value="<?= h($row['name']) ?>">
+      <input type="hidden" name="gender" value="<?= h($row['gender']) ?>">
+      <input type="hidden" name="language" value="<?= h($row['language']) ?>">
 
       <h2>Q0-1：聞く問題</h2>
       <table>
@@ -187,6 +194,7 @@ $q0_3_answers = array_map(fn($i) => $row["q0_3_$i"], range(1, 3));
       性別：<?= h($row['gender']) ?>　
       言語：<?= h($row['language']) ?>
     </p>
+
     <p>レベル０スコア<?= h($row['total_score']) ?> 点</p>
 
     <h2>Q0-1：聞く問題</h2>

@@ -133,6 +133,8 @@ function updateScore() {
   const q0_3 = getScoreSum("q0_3", 3);
 
   document.getElementById("q0_1_score").value = q0_1;
+  document.getElementById("q0_2_score").value = q0_2;
+  document.getElementById("q0_3_score").value = q0_3;
   setText("q0_1_score_display", q0_1);
   setText("q0_2_score_display", q0_2);
   setText("q0_3_score_display", q0_3);

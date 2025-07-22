@@ -5,15 +5,27 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-//1. POSTデータ取得
+$student_id = $_GET['student'] ?? '';
+$student_data = [];
+
+if ($student_id !== '') {
+  $pdo = db_conn();
+  $stmt = $pdo->prepare("SELECT * FROM students WHERE student_id = :student_id");
+  $stmt->bindValue(':student_id', $student_id, PDO::PARAM_STR);
+  $stmt->execute();
+  $student_data = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+
+// //1. POSTデータ取得
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $school = $_POST['school'];
-  $name = $_POST['name'];
-  $year = $_POST['year'];
-  $class = $_POST['class'];
-  $gender = $_POST['gender'];
+  //   $school = $_POST['school'];
+  //   $name = $_POST['name'];
+  //   $year = $_POST['year'];
+  //   $class = $_POST['class'];
+  //   $gender = $_POST['gender'];
   $date = $_POST['date'];
-  $lang = $_POST['language'];
+  //   $lang = $_POST['language'];
 
   //スコア計算
   $scores = [];
@@ -168,12 +180,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <h2>レベルチェックーレベル0</h2>
 
-    <form action="index.php" method="POST" onsubmit="return handleSubmit()">
 
-    <fieldset>
+
+    <form action="index.php" method="GET" onsubmit="return false;">
+      <fieldset>
+        <legend>実施児童・生徒番号を入力してください</legend>
+        <label for="student">児童・生徒番号（例：STU001）：</label>
+        <input type="text" name="student" id="student" required>
+        <button type="submit" onclick="location.href='index.php?student=' + document.getElementById('student').value;">検索</button>
+      </fieldset>
+    </form>
+    <form action="index.php" method="POST" onsubmit="return handleSubmit()">
+      <fieldset>
         <legend>基本情報</legend>
+
         <div class="inline-field">
-          <label for="name">学校名：</label>
+          <input type="text" name="school" id="school" class="long"
+            value="<?= h($student_data['school'] ?? '') ?>">
+
+          <input type="text" name="year" id="year" class="short"
+            value="<?= h($student_data['grade'] ?? '') ?>">
+
+          <input type="text" name="class" id="class" class="short"
+            value="<?= h($student_data['class'] ?? '') ?>">
+
+          <input type="text" name="name" id="name" class="long"
+            value="<?= h($student_data['name'] ?? '') ?>">
+
+          <input type="text" name="gender" id="gender" class="short"
+            value="<?= h($student_data['gender'] ?? '') ?>">
+
+
+
+          <!-- <label for="name">学校名：</label>
           <input type="text" name="school" id="name" class="long" required />
 
           <label for="year"></label>
@@ -203,7 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             name="gender"
             id="gender"
             class="short"
-            required />
+            required /> -->
 
           <label for="date">実施日：</label>
           <input type="date" name="date" id="date" class="medium" required />
