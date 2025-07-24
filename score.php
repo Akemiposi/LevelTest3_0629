@@ -51,7 +51,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   <!-- ヘッダー -->
   <header style="background-color:#2c3e50; padding:20px; text-align:center;">
-    <h1 style="color:white; font-size:2rem; margin:0;">結果一覧</h1>
+    <h1 style="color:white; font-size:2rem; margin:0;">管理者用結果一覧</h1>
   </header>
 
   <!-- ナビゲーション -->
@@ -70,6 +70,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
   </div>
 
   <table>
+    
     <tr>
       <th>日付</th>
       <th>番号</th>

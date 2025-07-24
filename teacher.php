@@ -80,65 +80,68 @@ if (!empty($student_ids)) {
                 <?php if (count($students) === 0): ?>
                     <p>担当している生徒が登録されていません。</p>
                 <?php else: ?>
-                    <table border="1">
-                        <thead>
-                            <tr>
-                                <th>児童・生徒番号</th>
-                                <th>学校</th>
-                                <th>年</th>
-                                <th>組</th>
-                                <th>名前</th>
-                                <th>性別</th>
-                                <th>言語</th>
-                                <th>レベル０</th>
-                                <th>レベル１</th>
-                                <th>レベル２</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($students as $student): ?>
-                                <tr>
-                                    <td><?= h($student['student_id']) ?></td>
-                                    <td><?= h($student['school']) ?></td>
-                                    <td><?= h($student['grade']) ?></td>
-                                    <td><?= h($student['class']) ?></td>
-                                    <td><?= h($student['name']) ?></td>
-                                    <td><?= h($student['gender']) ?></td>
-                                    <td><?= h($student['language_code']) ?></td>
-
-                                    <?php
-                                    $sid = $student['student_id'];
-                                    $result = $results_by_student[$sid][0] ?? null; // 最新データ1件だけ表示
-                                    ?>
-                                    <td>
-                                        <?php if ($result): ?>
-                                            <a href="detail.php?id=<?= h($result['id']) ?>"><?= h($result['total_score']) ?>点</a>
-                                        <?php else: ?>
-                                            -
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <?php if ($result): ?>
-                                            <a href="detail_q1.php?id=<?= h($result['id']) ?>"><?= h($result['q1_total_score']) ?>点</a>
-                                        <?php else: ?>
-                                            -
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <?php if ($result): ?>
-                                            <a href="detail_q2.php?id=<?= h($result['id']) ?>"><?= h($result['q2_total_score']) ?>点</a>
-                                        <?php else: ?>
-                                            -
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php endif; ?>
-
-                <p><a href="logout.php">ログアウト</a></p>
             </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>日付</th>
+                        <th>児童・生徒番号</th>
+                        <th>学校</th>
+                        <th>年</th>
+                        <th>組</th>
+                        <th>名前</th>
+                        <th>性別</th>
+                        <th>言語</th>
+                        <th>レベル０</th>
+                        <th>レベル１</th>
+                        <th>レベル２</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($students as $student): ?>
+                        <tr>
+                            <td><?= h($row['date']) ?></td>
+                            <td><?= h($student['student_id']) ?></td>
+                            <td><?= h($student['school']) ?></td>
+                            <td><?= h($student['grade']) ?></td>
+                            <td><?= h($student['class']) ?></td>
+                            <td><?= h($student['name']) ?></td>
+                            <td><?= h($student['gender']) ?></td>
+                            <td><?= h($student['language_code']) ?></td>
+
+                            <?php
+                            $sid = $student['student_id'];
+                            $result = $results_by_student[$sid][0] ?? null; // 最新データ1件だけ表示
+                            ?>
+                            <td>
+                                <?php if ($result): ?>
+                                    <a href="detail.php?id=<?= h($result['id']) ?>"><?= h($result['total_score']) ?>点</a>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if ($result): ?>
+                                    <a href="detail_q1.php?id=<?= h($result['id']) ?>"><?= h($result['q1_total_score']) ?>点</a>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if ($result): ?>
+                                    <a href="detail_q2.php?id=<?= h($result['id']) ?>"><?= h($result['q2_total_score']) ?>点</a>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+
+        <p><a href="logout.php">ログアウト</a></p>
+        </div>
         </body>
 
 </html>
