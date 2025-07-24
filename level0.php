@@ -273,9 +273,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             class="short"
             required /> -->
 
-          <br><label for="date">実施日：</label>
-          <input type="date" name="date" id="date" class="medium" required />
-        </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label for="date">実施日：</label>
+            <input type="date" id="date" name="date" class="medium" style="padding: 6px; font-size: 16px;" required>
+          </div>
       </fieldset>
 
       <fieldset>
