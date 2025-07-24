@@ -34,7 +34,7 @@ if ($student_id !== '') {
 
     <!-- ナビゲーション -->
     <nav class="nav-bar">
-        <a href="index.php">レベル０</a>
+        <a href="level0.php">レベル０</a>
         <a href="level1.php">レベル１</a>
         <a href="level2.php">レベル２</a>
         <a href="score.php">結果一覧</a>
@@ -45,15 +45,15 @@ if ($student_id !== '') {
 
         <h2>レベルチェックーレベル1</h2>
 
-        <form action="index.php" method="GET" onsubmit="return false;">
+        <form action="level0.php" method="GET" onsubmit="return false;">
             <fieldset>
                 <legend>実施児童・生徒番号を入力してください</legend>
                 <label for="student">児童・生徒番号（例：STU001）：</label>
                 <input type="text" name="student" id="student" required>
-                <button type="submit" onclick="location.href='index.php?student=' + document.getElementById('student').value;">検索</button>
+                <button type="submit" onclick="location.href='level0.php?student=' + document.getElementById('student').value;">検索</button>
             </fieldset>
         </form>
-        <form action="index.php" method="POST" onsubmit="return handleSubmit()">
+        <form action="level0.php" method="POST" onsubmit="return handleSubmit()">
             <fieldset>
                 <legend>基本情報</legend>
 

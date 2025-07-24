@@ -65,13 +65,15 @@ $q0_3_answers = array_map(fn($i) => $row["q0_3_$i"], range(1, 3));
     <h1 style="color:white; font-size:2rem; margin:0;">結果詳細</h1>
   </header>
 
-  <nav class="nav-bar">
-    <a href="index.php">レベル０</a>
-    <a href="level1.php">レベル１</a>
-    <a href="level2.php">レベル２</a>
-    <a href="score.php">結果一覧</a>
-    <a href="curriculum.php">カリキュラム一覧</a>
-    <a href="plan.php">指導計画書発行</a>
+
+     <nav class="nav-bar">
+        <a href="level0.php">レベル０</a>
+        <a href="level1.php">レベル１</a>
+        <a href="level2.php">レベル２</a>
+        <a href="teacher.php">講師用ページ</a>
+        <a href="curriculum.php">カリキュラム一覧</a>
+        <a href="plan.php">指導計画書発行</a>
+         <a href="score.php">管理用</a>
   </nav>
 
   <h1><?= h($row['name']) ?> さんの詳細結果</h1>

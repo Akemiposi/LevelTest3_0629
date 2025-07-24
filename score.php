@@ -1,8 +1,16 @@
 <?php
-require_once('./funcs.php'); // h(), db_conn()
+session_start();
+require_once('funcs.php'); // db_conn(), check_login() を含む共通関数
 
-$pdo = db_conn(); // DB接続
+// ログインチェック（未ログインなら login.php に飛ばす）
+check_login();
 
+// 管理者以外はアクセス不可
+if ($_SESSION['role'] !== 'admin') {
+  exit('アクセス権限がありません（admin専用ページ）');
+}
+
+$pdo = db_conn();
 // データ取得
 $sql = "SELECT * FROM gs_leveltest3_01 ORDER BY date DESC";
 $stmt = $pdo->prepare($sql);
@@ -48,7 +56,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   <!-- ナビゲーション -->
   <nav class="nav-bar">
-    <a href="index.php">レベル０</a>
+    <a href="level0.php">レベル０</a>
     <a href="level1.php">レベル１</a>
     <a href="level2.php">レベル２</a>
     <a href="score.php">結果一覧</a>
@@ -56,40 +64,49 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <a href="plan.php">指導計画書発行</a>
   </nav>
   <h1>テスト結果一覧</h1>
+
+  <div class="logout">
+    <a href="logout.php">ログアウト</a>
+  </div>
+
   <table>
     <tr>
       <th>日付</th>
+      <th>番号</th>
       <th>学校</th>
       <th>年</th>
       <th>組</th>
       <th>名前</th>
       <th>性別</th>
       <th>言語</th>
+      <th>講師</th>
       <th>L0詳細</th>
       <th>L1詳細</th>
       <th>L2詳細</th>
     </tr>
 
     <tr>
-    <?php foreach ($results as $row): ?>
+      <?php foreach ($results as $row): ?>
 
         <td><?= h($row['date']) ?></td>
+        <td><?= h($row['student_id']) ?></td>
         <td><?= h($row['school']) ?></td>
         <td><?= h($row['year']) ?></td>
         <td><?= h($row['class']) ?></td>
         <td><?= h($row['name']) ?></td>
         <td><?= h($row['gender']) ?></td>
         <td><?= h($row['language']) ?></td>
+        <td><?= h($row['teacher_id']) ?></td>
         <td><a href="detail.php?id=<?= h($row['id']) ?>"><?= h($row['total_score']) ?>点</a></td>
         <td><a href="detail_q1.php?id=<?= h($row['id']) ?>"><?= h($row['q1_total_score']) ?>点</a></td>
         <td><a href="detail_q2.php?id=<?= h($row['id']) ?>"><?= h($row['q2_total_score']) ?>点</a></td>
 
-        </tr>
+    </tr>
 
-      <?php endforeach; ?>
+  <?php endforeach; ?>
   </table>
 
-  <p><a href="index.php">← 戻る</a></p>
+  <p><a href="level0.php">← 戻る</a></p>
 
   <footer>@nihongo-note all right reserved.</footer>
 

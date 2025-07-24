@@ -75,7 +75,7 @@ foreach ($curricula as $row) {
   </header>
 
   <nav class="nav-bar">
-    <a href="index.php">レベル０</a>
+    <a href="level0.php">レベル０</a>
     <a href="level1.php">レベル１</a>
     <a href="level2.php">レベル２</a>
     <a href="score.php">結果一覧</a>
