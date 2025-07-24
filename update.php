@@ -14,7 +14,7 @@ $school = $_POST['school'] ?? '';
 $year = $_POST['year'] ?? '';
 $class = $_POST['class'] ?? '';
 $gender = $_POST['gender'] ?? '';
-$language = $_POST['language'] ?? '';
+$language = $_POST['language_code'] ?? '';
 
 // 各セクションの値取得と合計計算
 $q0_1 = [];
@@ -41,7 +41,7 @@ $unselected_katakana = $_POST['unselected_katakana'] ?? '';
 // SQL（student_id を更新対象に含めるならここも）
 $sql = "UPDATE gs_leveltest3_01 SET
   date = :date, school = :school, year = :year, class = :class,
-  gender = :gender, language = :language,
+  gender = :gender, language_code = :language_code,
   q0_1_1 = :q0_1_1, q0_1_2 = :q0_1_2, q0_1_3 = :q0_1_3, q0_1_4 = :q0_1_4,
   q0_1_5 = :q0_1_5, q0_1_6 = :q0_1_6, q0_1_7 = :q0_1_7,
   q0_2_1 = :q0_2_1, q0_2_2 = :q0_2_2, q0_2_3 = :q0_2_3, q0_2_4 = :q0_2_4,
@@ -63,7 +63,7 @@ $stmt->bindValue(':school', $school, PDO::PARAM_STR);
 $stmt->bindValue(':year', $year, PDO::PARAM_STR);
 $stmt->bindValue(':class', $class, PDO::PARAM_STR);
 $stmt->bindValue(':gender', $gender, PDO::PARAM_STR);
-$stmt->bindValue(':language', $language, PDO::PARAM_STR);
+$stmt->bindValue(':language_code', $language, PDO::PARAM_STR);
 
 foreach ($q0_1 as $k => $v) $stmt->bindValue(":$k", $v, PDO::PARAM_INT);
 foreach ($q0_2 as $k => $v) $stmt->bindValue(":$k", $v, PDO::PARAM_INT);

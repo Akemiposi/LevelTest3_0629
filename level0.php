@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once('./funcs.php');
 
 ini_set('display_errors', 1);
@@ -11,14 +11,14 @@ $student_data = [];
 
 if ($student_id !== '') {
   $pdo = db_conn();
-  $stmt = $pdo->prepare("SELECT * FROM students WHERE student_id = :student_id");
+  $stmt = $pdo->prepare("SELECT * FROM gs_leveltest3_01 WHERE student_id = :student_id");
   $stmt->bindValue(':student_id', $student_id, PDO::PARAM_STR);
   $stmt->execute();
   $student_data = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 
-// //1. POSTデータ取得
+// 1. POSTデータ取得
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $school = $_POST['school'];
   $name = $_POST['name'];
@@ -27,6 +27,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $gender = $_POST['gender'];
   $date = $_POST['date'];
   $lang = $_POST['language'];
+
+  // ログイン中の講師IDを取得
+  $teacher_id = $_SESSION['teacher_id'] ?? null;
+
+  if (!$teacher_id) {
+    exit('ログインしていません。');
+  }
+
 
   //スコア計算
   $scores = [];
@@ -65,32 +73,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $scores['total_score'] = $totalScore;
 
   //2. DB接続します
-  // try {
-  //     $pdo = new PDO('mysql:dbname=gs_db_leveltest3;charset=utf8;host=localhost','root','');
-  //   } catch (PDOException $e) {
-  //     exit('DBConnectError:'.$e->getMessage());
-  //   }
   $pdo = db_conn();
 
   //３．データ登録SQL作成
-  // 1. SQL文を用意
+  // すでにデータがあるかチェック
+  $sql_check = "SELECT id FROM gs_leveltest3_01 WHERE student_id = :student_id AND date = :date";
+  $stmt_check = $pdo->prepare($sql_check);
+  $stmt_check->bindValue(':student_id', $student_id, PDO::PARAM_STR);
+  $stmt_check->bindValue(':date', $date, PDO::PARAM_STR); // フォームから受け取った日付
+  $stmt_check->execute();
+  $existing = $stmt_check->fetch(PDO::FETCH_ASSOC);
 
-  // 1. SQL文を用意
-  $sql = "INSERT INTO gs_leveltest3_01 (
-    date, name, school, year, class, gender, language,
-    q0_1_1, q0_1_2, q0_1_3, q0_1_4, q0_1_5, q0_1_6, q0_1_7, q0_1_score,
-    q0_2_1, q0_2_2, q0_2_3, q0_2_4, q0_2_5, q0_2_6, q0_2_7, q0_2_8, q0_2_9, q0_2_10, q0_2_score,
-    q0_3_1, q0_3_2, q0_3_3, q0_3_score,
-    hiragana_score, katakana_score, q0_4_score, total_score, selected_hiragana, selected_katakana, unselected_hiragana, unselected_katakana
-) VALUES (
-    :date, :name, :school, :year, :class, :gender, :language,
-    :q0_1_1, :q0_1_2, :q0_1_3, :q0_1_4, :q0_1_5, :q0_1_6, :q0_1_7, :q0_1_score,
-    :q0_2_1, :q0_2_2, :q0_2_3, :q0_2_4, :q0_2_5, :q0_2_6, :q0_2_7, :q0_2_8, :q0_2_9, :q0_2_10, :q0_2_score,
-    :q0_3_1, :q0_3_2, :q0_3_3, :q0_3_score,
-    :hiragana_score, :katakana_score, :q0_4_score, :total_score, :selected_hiragana, :selected_katakana, :unselected_hiragana, :unselected_katakana
-)";
+  if ($existing) {
+    // ---------- UPDATE ----------
+    $sql = "UPDATE gs_leveltest3_01 SET
+        name = :name, school = :school, year = :year, class = :class, gender = :gender, language_code = :language_code, teacher_id = :teacher_id,
+        q0_1_1 = :q0_1_1, q0_1_2 = :q0_1_2, q0_1_3 = :q0_1_3, q0_1_4 = :q0_1_4, q0_1_5 = :q0_1_5, q0_1_6 = :q0_1_6, q0_1_7 = :q0_1_7, q0_1_score = :q0_1_score,
+        q0_2_1 = :q0_2_1, q0_2_2 = :q0_2_2, q0_2_3 = :q0_2_3, q0_2_4 = :q0_2_4, q0_2_5 = :q0_2_5, q0_2_6 = :q0_2_6, q0_2_7 = :q0_2_7, q0_2_8 = :q0_2_8, q0_2_9 = :q0_2_9, q0_2_10 = :q0_2_10, q0_2_score = :q0_2_score,
+        q0_3_1 = :q0_3_1, q0_3_2 = :q0_3_2, q0_3_3 = :q0_3_3, q0_3_score = :q0_3_score,
+        hiragana_score = :hiragana_score, katakana_score = :katakana_score, q0_4_score = :q0_4_score,
+        total_score = :total_score, selected_hiragana = :selected_hiragana, selected_katakana = :selected_katakana,
+        unselected_hiragana = :unselected_hiragana, unselected_katakana = :unselected_katakana
+        WHERE student_id = :student_id AND date = :date";
+  } else {
+    // ---------- INSERT ----------
+    $sql = "INSERT INTO gs_leveltest3_01 (
+        date, name, school, year, class, gender, language_code, student_id, teacher_id,
+        q0_1_1, q0_1_2, q0_1_3, q0_1_4, q0_1_5, q0_1_6, q0_1_7, q0_1_score,
+        q0_2_1, q0_2_2, q0_2_3, q0_2_4, q0_2_5, q0_2_6, q0_2_7, q0_2_8, q0_2_9, q0_2_10, q0_2_score,
+        q0_3_1, q0_3_2, q0_3_3, q0_3_score,
+        hiragana_score, katakana_score, q0_4_score, total_score, selected_hiragana, selected_katakana, unselected_hiragana, unselected_katakana
+    ) VALUES (
+        :date, :name, :school, :year, :class, :gender, :language_code, :student_id, :teacher_id,
+        :q0_1_1, :q0_1_2, :q0_1_3, :q0_1_4, :q0_1_5, :q0_1_6, :q0_1_7, :q0_1_score,
+        :q0_2_1, :q0_2_2, :q0_2_3, :q0_2_4, :q0_2_5, :q0_2_6, :q0_2_7, :q0_2_8, :q0_2_9, :q0_2_10, :q0_2_score,
+        :q0_3_1, :q0_3_2, :q0_3_3, :q0_3_score,
+        :hiragana_score, :katakana_score, :q0_4_score, :total_score, :selected_hiragana, :selected_katakana, :unselected_hiragana, :unselected_katakana
+    )";
+  }
 
   $stmt = $pdo->prepare($sql);
+
+
 
   // 基本情報
   $stmt->bindValue(':date', $_POST['date'], PDO::PARAM_STR);
@@ -99,7 +123,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $stmt->bindValue(':year', $_POST['year'], PDO::PARAM_STR);
   $stmt->bindValue(':class', $_POST['class'], PDO::PARAM_STR);
   $stmt->bindValue(':gender', $_POST['gender'], PDO::PARAM_STR);
-  $stmt->bindValue(':language', $_POST['language'], PDO::PARAM_STR);
+  $stmt->bindValue(':language_code', $_POST['language_code'], PDO::PARAM_STR);
+  $stmt->bindValue(':student_id', $student_id, PDO::PARAM_STR);
+  $stmt->bindValue(':teacher_id', $teacher_id, PDO::PARAM_STR);
 
   // q0_1
   for ($i = 1; $i <= 7; $i++) {
@@ -142,7 +168,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $error = $stmt->errorInfo();
     exit('ErrorMessage:' . $error[2]);
   } else {
-    header("Location: score.php");
+    // 成功時 → thanks.php に名前を付けて送る
+    header("Location: thanks.php?name=" . urlencode($name));
     exit;
   }
 }
@@ -173,9 +200,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <a href="level0.php">レベル０</a>
     <a href="level1.php">レベル１</a>
     <a href="level2.php">レベル２</a>
-    <a href="score.php">結果一覧</a>
+    <a href="teacher.php">結果一覧</a>
     <a href="curriculum.php">カリキュラム一覧</a>
     <a href="plan.php">指導計画書発行</a>
+    <a href="score.php">管理者用</a>
   </nav>
   <main>
 
@@ -200,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             value="<?= h($student_data['school'] ?? '') ?>">
 
           <input type="text" name="year" id="year" class="short"
-            value="<?= h($student_data['grade'] ?? '') ?>">
+            value="<?= h($student_data['year'] ?? '') ?>">
 
           <input type="text" name="class" id="class" class="short"
             value="<?= h($student_data['class'] ?? '') ?>">
@@ -245,7 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             class="short"
             required /> -->
 
-          <label for="date">実施日：</label>
+          <br><label for="date">実施日：</label>
           <input type="date" name="date" id="date" class="medium" required />
         </div>
       </fieldset>
@@ -255,7 +283,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <label for="languageSelect">母語を選んでください（
           select your language）：</label>
-        <select id="languageSelect" name="language">
+        <select id="languageSelect" name="language_code">
           <option value="ja">日本語</option>
           <option value="en">English</option>
           <option value="zh">中文 (Chinese)</option>
@@ -266,7 +294,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <option value="pt">Português (Portuguese)</option>
           <option value="es">Español (Spanish)</option>
           <option value="ne">नेपाली (Nepali)</option>
-          <option value="en">English</option>
           <option value="my">မြန်မာစာ (Burmese)</option>
           <option value="ko">한국어 (Korean)</option>
           <option value="mn">Монгол (Mongolian)</option>

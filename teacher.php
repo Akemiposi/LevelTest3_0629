@@ -2,7 +2,7 @@
 require_once('funcs.php');
 session_start();
 
-// ログインしていなければログインページへ
+// ログインチェック
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
     header('Location: login.php');
     exit;
@@ -13,36 +13,24 @@ $teacher_name = $_SESSION['name'] ?? '講師';
 
 $pdo = db_conn();
 
-// 担当している生徒を取得
-$stmt = $pdo->prepare('SELECT * FROM students WHERE teacher_id = :teacher_id ORDER BY name ASC');
-$stmt->bindValue(':teacher_id', $teacher_id, PDO::PARAM_STR);
-$stmt->execute();
-$students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// 生徒のIDを配列で収集
-$student_ids = array_column($students, 'student_id');
-
-// テスト結果を student_id ごとにまとめて取得
-$results_by_student = [];
-if (!empty($student_ids)) {
-    // IN句用のプレースホルダ生成
-    $placeholders = implode(',', array_fill(0, count($student_ids), '?'));
-
-    $sql = "SELECT * FROM gs_leveltest3_01 WHERE student_id IN ($placeholders)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($student_ids);
-    $all_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // student_idごとに結果をまとめる
-    foreach ($all_results as $row) {
-        $sid = $row['student_id'];
-        if (!isset($results_by_student[$sid])) {
-            $results_by_student[$sid] = [];
-        }
-        $results_by_student[$sid][] = $row;
-    }
-}
+// 生徒ごとの最新結果を1件ずつ取得
+$sql = "
+    SELECT t.*
+    FROM gs_leveltest3_01 t
+    INNER JOIN (
+        SELECT student_id, MAX(date) AS max_date
+        FROM gs_leveltest3_01
+        WHERE teacher_id = ?
+        GROUP BY student_id
+    ) latest
+    ON t.student_id = latest.student_id AND t.date = latest.max_date
+    ORDER BY t.name ASC
+";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$teacher_id]);
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -53,7 +41,75 @@ if (!empty($student_ids)) {
     <link rel="icon" type="image/png" href="img/favicon2.png">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
-    <!-- <link rel="stylesheet" href="css/login.css"> -->
+    <style>
+        main {
+            background: none !important;
+            box-shadow: none !important;
+            padding: 40px 20px !important;
+            margin: 0 auto !important;
+            width: 100%;
+        }
+
+        .form-container {
+            background: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 auto !important;
+            width: 100% !important;
+            max-width: none !important;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto !important;
+            font-size: 15px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px 12px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .logout-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .logout-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+
+
 </head>
 
 <body>
@@ -70,17 +126,16 @@ if (!empty($student_ids)) {
         <a href="teacher.php">講師用ページ</a>
         <a href="curriculum.php">カリキュラム一覧</a>
         <a href="plan.php">指導計画書発行</a>
+        <a href="score.php">管理者用</a>
     </nav>
+
+    <!-- メイン -->
     <main>
+        <h2><?= h($teacher_name) ?> 講師の担当児童・生徒</h2>
 
-        <body>
-            <div class="form-container">
-                <h2><?= h($teacher_name) ?> 講師の担当児童・生徒</h2>
-
-                <?php if (count($students) === 0): ?>
-                    <p>担当している生徒が登録されていません。</p>
-                <?php else: ?>
-            </div>
+        <?php if (count($results) === 0): ?>
+            <p style="text-align: center;">担当している生徒の記録がまだありません。</p>
+        <?php else: ?>
             <table>
                 <thead>
                     <tr>
@@ -98,41 +153,31 @@ if (!empty($student_ids)) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($students as $student): ?>
+                    <?php foreach ($results as $row): ?>
                         <tr>
                             <td><?= h($row['date']) ?></td>
-                            <td><?= h($student['student_id']) ?></td>
-                            <td><?= h($student['school']) ?></td>
-                            <td><?= h($student['grade']) ?></td>
-                            <td><?= h($student['class']) ?></td>
-                            <td><?= h($student['name']) ?></td>
-                            <td><?= h($student['gender']) ?></td>
-                            <td><?= h($student['language_code']) ?></td>
+                            <td><?= h($row['student_id']) ?></td>
+                            <td><?= h($row['school']) ?></td>
+                            <td><?= h($row['year']) ?></td>
+                            <td><?= h($row['class']) ?></td>
+                            <td><?= h($row['name']) ?></td>
+                            <td><?= h($row['gender']) ?></td>
+                            <td><?= h($row['language_code']) ?></td>
 
-                            <?php
-                            $sid = $student['student_id'];
-                            $result = $results_by_student[$sid][0] ?? null; // 最新データ1件だけ表示
-                            ?>
                             <td>
-                                <?php if ($result): ?>
-                                    <a href="detail.php?id=<?= h($result['id']) ?>"><?= h($result['total_score']) ?>点</a>
-                                <?php else: ?>
-                                    -
-                                <?php endif; ?>
+                                <?php if (isset($row['total_score'])): ?>
+                                    <a href="detail.php?id=<?= h($row['id']) ?>"><?= h($row['total_score']) ?>点</a>
+                                <?php else: ?> - <?php endif; ?>
                             </td>
                             <td>
-                                <?php if ($result): ?>
-                                    <a href="detail_q1.php?id=<?= h($result['id']) ?>"><?= h($result['q1_total_score']) ?>点</a>
-                                <?php else: ?>
-                                    -
-                                <?php endif; ?>
+                                <?php if (isset($row['q1_total_score'])): ?>
+                                    <a href="detail_q1.php?id=<?= h($row['id']) ?>"><?= h($row['q1_total_score']) ?>点</a>
+                                <?php else: ?> - <?php endif; ?>
                             </td>
                             <td>
-                                <?php if ($result): ?>
-                                    <a href="detail_q2.php?id=<?= h($result['id']) ?>"><?= h($result['q2_total_score']) ?>点</a>
-                                <?php else: ?>
-                                    -
-                                <?php endif; ?>
+                                <?php if (isset($row['q2_total_score'])): ?>
+                                    <a href="detail_q2.php?id=<?= h($row['id']) ?>"><?= h($row['q2_total_score']) ?>点</a>
+                                <?php else: ?> - <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -140,8 +185,10 @@ if (!empty($student_ids)) {
             </table>
         <?php endif; ?>
 
-        <p><a href="logout.php">ログアウト</a></p>
-        </div>
-        </body>
+        <p class="logout-container">
+            <a href="logout.php" class="logout-button">ログアウト</a>
+        </p>
+    </main>
+</body>
 
 </html>

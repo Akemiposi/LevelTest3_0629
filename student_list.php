@@ -41,10 +41,10 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <a href="level1.php">レベル１</a>
     <a href="level2.php">レベル２</a>
     <a href="score.php">結果一覧</a>
-    <a href="student_list.php">生徒一覧</a>
-    <a href="teacher.php">講師用ページ</a>
+    <a href="teacher.php">結果一覧</a>
     <a href="curriculum.php">カリキュラム一覧</a>
     <a href="plan.php">指導計画書発行</a>
+     <a href="score.php">管理者用</a>
   </nav>
 
   <body>

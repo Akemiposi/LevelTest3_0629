@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-    <div class="form-container">
+
 
     <!-- ロゴ -->
     <div class="logo-container">
@@ -79,7 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="register-link">
             <!-- パスワードをお忘れですか？ <a href="forget_password.php">再設定はこちら</a> -->
-             <br><br>
+            <br><br>
             まだ登録していませんか？ <a href="register.php">新規登録はこちら</a>
         </div>
-    </div>

@@ -10,7 +10,7 @@ body {
 
 /* 中央寄せ＋白背景カード風 */
 main {
-  max-width: 800px;
+  max-width: 960px;
   margin: 0 auto;
   background: #fff;
   padding: 30px;

@@ -37,9 +37,10 @@ if ($student_id !== '') {
         <a href="level0.php">レベル０</a>
         <a href="level1.php">レベル１</a>
         <a href="level2.php">レベル２</a>
-        <a href="score.php">結果一覧</a>
+        <a href="teacher.php">結果一覧</a>
         <a href="curriculum.php">カリキュラム一覧</a>
         <a href="plan.php">指導計画書発行</a>
+         <a href="score.php">管理者用</a>
     </nav>
     <main>
 

@@ -62,6 +62,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <a href="score.php">結果一覧</a>
     <a href="curriculum.php">カリキュラム一覧</a>
     <a href="plan.php">指導計画書発行</a>
+    <a href="login.php">講師用</a>
   </nav>
   <h1>テスト結果一覧</h1>
 
@@ -70,7 +71,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
   </div>
 
   <table>
-    
+
     <tr>
       <th>日付</th>
       <th>番号</th>
@@ -96,11 +97,25 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <td><?= h($row['class']) ?></td>
         <td><?= h($row['name']) ?></td>
         <td><?= h($row['gender']) ?></td>
-        <td><?= h($row['language']) ?></td>
+        <td><?= h($row['language_code']) ?></td>
         <td><?= h($row['teacher_id']) ?></td>
-        <td><a href="detail.php?id=<?= h($row['id']) ?>"><?= h($row['total_score']) ?>点</a></td>
-        <td><a href="detail_q1.php?id=<?= h($row['id']) ?>"><?= h($row['q1_total_score']) ?>点</a></td>
-        <td><a href="detail_q2.php?id=<?= h($row['id']) ?>"><?= h($row['q2_total_score']) ?>点</a></td>
+        <td>
+          <a href="detail.php?id=<?= h($row['id']) ?>">
+            <?= isset($row['total_score']) ? h($row['total_score']) . '点' : '—' ?>
+          </a>
+        </td>
+
+        <td>
+          <a href="detail_q1.php?id=<?= h($row['id']) ?>">
+            <?= isset($row['q1_total_score']) ? h($row['q1_total_score']) . '点' : '—' ?>
+          </a>
+        </td>
+
+        <td>
+          <a href="detail_q2.php?id=<?= h($row['id']) ?>">
+            <?= isset($row['q2_total_score']) ? h($row['q2_total_score']) . '点' : '—' ?>
+          </a>
+        </td>
 
     </tr>
 
