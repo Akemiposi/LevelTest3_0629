@@ -83,9 +83,9 @@ https://nihongonote.net/
 - level0.php：レベル０テスト
 - - thanks.php：テスト完了確認ページ（例：◯◯さんの記録を保存しました）
 - level1.php：レベル１テスト（※現在HTML部分のみ）
-level2.php：レベル２テスト（※未作成）
-curriculum.php：カリキュラム一覧
-plan.php：指導計画書（※途中）
+- level2.php：レベル２テスト（※未作成）
+- curriculum.php：カリキュラム一覧
+- plan.php：指導計画書（※途中）
 
 ### 管理者ページ
 - score.php：全生徒一覧
