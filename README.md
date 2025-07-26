@@ -103,7 +103,7 @@ https://nihongonote.net/
 - .env：DB接続・APIキー設定 ※非公開
 - .env.production：本番環境用設定 ※非公開
 - tts-credentials.json：Google Cloud Text-to-Speech認証情報 ※非公開
-- README.md：開発用の説明ファイル
+- README.md
 
 ### 削除予定ファイル
 - admin.php
