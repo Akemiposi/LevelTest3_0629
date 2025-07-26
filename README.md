@@ -68,6 +68,47 @@ https://nihongonote.net/
 
 #### 今は生徒情報がある生徒しかテストができない仕様になっている。（登録者しかテストができない。）今後、講師が生徒を登録してテストをできるようにするか迷い中。
 
+## サイト構成（フォルダ・ファイル構造）
+### 認証関連
+- login.php：ログインページ（講師・管理者用）
+- register.php：新規登録
+- forget_password.php：パスワード再設定（※未完成）
+- logout.php：ログアウト処理
+
+### 講師ページ
+- teacher.php：担当生徒情報・スコア記録一覧
+- detail.php：テスト記録詳細・スコア修正／再計算／上書き
+- - update.php
+- - delete.php
+- level0.php：レベル０テスト
+- - thanks.php：テスト完了確認ページ（例：◯◯さんの記録を保存しました）
+- level1.php：レベル１テスト（※現在HTML部分のみ）
+level2.php：レベル２テスト（※未作成）
+curriculum.php：カリキュラム一覧
+plan.php：指導計画書（※途中）
+
+### 管理者ページ
+- score.php：全生徒一覧
+
+### リソース関連
+- img/：画像フォルダ（問題画像・ロゴなど）
+- css/
+- - style.css：全体デザイン用共通CSS
+- - login.css：ログイン・ログアウト用CSS
+- js/
+- - index.js：Geminiボタン／かな表クリック／点数計算・再計算
+
+### その他設定・構成ファイル
+- funcs.php：共通関数（DB接続、h() など）※非公開
+- .env：DB接続・APIキー設定 ※非公開
+- .env.production：本番環境用設定 ※非公開
+- tts-credentials.json：Google Cloud Text-to-Speech認証情報 ※非公開
+- README.md：開発用の説明ファイル
+
+### 削除予定ファイル
+- admin.php
+- student_list.php
+
 - （今後）plan.php の正答率照合、達成率の可視化（グラフ表示）と PDF 出力（mpdf）も実装したい
 - （今後）生徒ごとの記録管理（学習進捗 DB）まで拡張予定
 - （今後）２テストも追加し、各コマの正答率を分析、「どこから指導を始めるべきか」を支援者に提示する機能を追加したい
