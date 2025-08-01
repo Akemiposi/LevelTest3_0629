@@ -1,9 +1,12 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+require_once('./auth_teacher.php');
 
-require_once('./funcs.php');
+// ロールに応じて戻り先を決定
+if (!empty($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+    $back_url = 'score.php';
+} else {
+    $back_url = 'teacher.php';
+}
 
 // -----1,生徒ID指定 → 最新テスト結果の取得-----
 
@@ -256,7 +259,7 @@ $content2 = implode("\n", array_slice($selected, 4, 3)); // 後期
     </div>
   </section>
   <div class="print-controls">
-  <button onclick="window.location.href='teacher.php'">一覧に戻る</button>
+ <button onclick="window.location.href='<?= $back_url ?>'">一覧に戻る</button>
   <button onclick="window.print()">印刷する</button>
 </div>
 

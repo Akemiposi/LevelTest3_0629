@@ -1,16 +1,11 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+require_once('auth_teacher.php');
 
-require_once('./funcs.php');
-
-// GETから student_id を取得（優先）
+// ===== student_id取得 =====
 $student_id = $_GET['student_id'] ?? '';
+$pdo = db_conn();
 
-$pdo = db_conn(); // ← 最初に接続しておく（これで常に$pdoが使える）
-
-// もし student_id が空で id パラメータがあるなら旧形式を変換
+// 旧形式互換（?id=数値）
 if ($student_id === '' && isset($_GET['id'])) {
     $stmt = $pdo->prepare("SELECT student_id FROM leveltest_1 WHERE id = :id");
     $stmt->bindValue(':id', intval($_GET['id']), PDO::PARAM_INT);
@@ -21,14 +16,12 @@ if ($student_id === '' && isset($_GET['id'])) {
     }
 }
 
+// student_idチェック
 if ($student_id === '') {
     die('student_id不正なIDです');
 }
 
-if ($student_id === '') {
-    die('student_id不正なIDです');
-}
-
+// ===== 生徒データ取得 =====
 $sql = "SELECT * FROM leveltest_1 WHERE student_id = :student_id";
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':student_id', $student_id, PDO::PARAM_STR);
@@ -37,11 +30,13 @@ $row = $stmt->fetch();
 
 if (!$row) die('データが見つかりませんでした');
 
+// 主キーID
 $id = $row['id'];
 
-
+// 編集モード判定
 $edit_mode = isset($_GET['edit']) && $_GET['edit'] === '1';
 
+// ===== 質問配列（両モード共通） =====
 $q1_1_questions = [
     'あなたのたんじょうびはいつですか？',
     'なんねんせいですか？',
@@ -50,6 +45,7 @@ $q1_1_questions = [
     'すきなたべものはなんですか？',
     'これはだれのえんぴつですか？'
 ];
+
 $q1_2_questions = [
     'なんじですか？',
     'けしごむはいくらですか',
@@ -61,24 +57,51 @@ $q1_2_questions = [
     'しりとり（メガネ）',
     'しりとり（ねこ）'
 ];
+
 $q1_3_questions = [
     '音読評価',
     '質問１',
-    '質問2',
-    '質問3',
-    '質問4',
-    '質問5'
+    '質問２',
+    '質問３',
+    '質問４',
+    '質問５'
 ];
-$q1_1_answers = array_map(fn($i) => $row["q1_1_$i"] ?? '', range(1, 6));
-$q1_2_answers = array_map(fn($i) => $row["q1_2_$i"] ?? '', range(1, 9));
-$q1_3_answers = array_map(fn($i) => $row["q1_3_$i"] ?? '', range(1, 6));
 
+// ===== 回答配列 =====
+// Q1-1（1〜6）
+$q1_1_answers = array_map(
+    fn($i) => $row["q1_1_$i"] ?? '',
+    range(1, 6)
+);
+
+// Q1-2 通常4問（1〜4）
+$q1_2_normal_answers = array_map(
+    fn($i) => $row["q1_2_$i"] ?? '',
+    range(1, 4)
+);
+
+// Q1-2 しりとり5問（5_1〜5_5）
+$q1_2_shiritori_answers = array_map(
+    fn($i) => $row["q1_2_5_$i"] ?? '',
+    range(1, 5)
+);
+
+// Q1-3（1〜5）
+$q1_3_answers = array_map(
+    fn($i) => $row["q1_3_$i"] ?? '',
+    range(1, 5)
+);
+
+// Q1-3 音読評価
+$q1_3_ondoku = $row['q1_3_ondoku'] ?? 0;
+
+// 評価マーク関数
 function mark($v)
 {
     return intval($v) > 0 ? '⚪︎' : '×';
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -105,6 +128,147 @@ function mark($v)
         th {
             background-color: #f0f0f0;
         }
+
+        /* 中央寄せと高さ揃えを絶対に崩さない方法 */
+        .action-links {
+            display: flex;
+            justify-content: center;
+            /* 中央寄せ */
+            align-items: center;
+            /* 垂直中央 */
+            gap: 12px;
+            /* ボタン間の余白 */
+            margin-top: 15px;
+        }
+
+        /* formをflex子要素として揃える */
+        .action-links form {
+            margin: 10px;
+            padding: 0;
+            display: flex;
+            /* 中のbuttonを中央に */
+            align-items: center;
+        }
+
+        /* すべてのボタンとリンクに共通の見た目 */
+        .action-links a,
+        .action-links button {
+            display: inline-flex;
+            /* アイコンやテキストを縦中央 */
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            /* 高さを固定 */
+            min-width: 70px;
+            /* 最小幅 */
+            padding: 0 16px;
+            /* 左右の余白 */
+            font-size: 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            color: white;
+            transition: background-color 0.2s;
+        }
+
+        /* 修正ボタン */
+        .edit-btn {
+            background-color: #80df83;
+        }
+
+        .edit-btn:hover {
+            background-color: #5ac75e;
+        }
+
+        /* 削除ボタン */
+        .delete-btn {
+            background-color: #e25e5c;
+        }
+
+        .delete-btn:hover {
+            background-color: rgb(234, 68, 68);
+        }
+
+        /* 戻るボタン */
+        .back-btn {
+            background-color: #a98adf;
+        }
+
+        .back-btn:hover {
+            background-color: #9463e9;
+        }
+
+        /* 送信ボタンの汎用デザイン（上書き用） */
+        button[type="submit"] {
+            background-color: #43a047;
+            color: white;
+            margin: 10px;
+            display: inline-block;
+            padding: 6px 16px;
+            font-size: 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #388e3c;
+        }
+
+        /* 編集モード用のボタン配置とデザイン */
+        .edit-actions {
+            display: flex;
+            justify-content: center;
+            /* 中央寄せ */
+            align-items: center;
+            /* 垂直中央揃え */
+            gap: 12px;
+            /* ボタン間の余白 */
+            margin-top: 15px;
+        }
+
+        .edit-actions a,
+        .edit-actions button {
+            display: inline-flex;
+            /* アイコンやテキストを縦中央 */
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            /* 高さを固定 */
+            min-width: 70px;
+            /* 最小幅 */
+            padding: 0 16px;
+            /* 左右の余白 */
+            font-size: 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            color: white;
+            transition: background-color 0.2s;
+        }
+
+        /* 保存ボタン */
+        .save-btn {
+            background-color: #43a047;
+        }
+
+        .save-btn:hover {
+            background-color: #388e3c;
+        }
+
+        /* キャンセルリンク */
+        .cancel-link {
+            background-color: #a98adf;
+            color: white !important;
+        }
+
+        .cancel-link:hover {
+            background-color: #9463e9;
+        }
     </style>
 </head>
 
@@ -115,11 +279,11 @@ function mark($v)
     </header>
 
     <nav class="nav-bar">
-        <a href="level0.php">レベル０</a>
-        <a href="level1.php">レベル１</a>
-        <a href="level2.php">レベル２</a>
-        <a href="teacher.php">結果一覧</a>
-        <a href="curriculum.php">カリキュラム</a>
+        <a href="level0.php?teacher_id=<?= urlencode($_SESSION['teacher_id']) ?>">レベル０</a>
+        <a href="level1.php?teacher_id=<?= urlencode($_SESSION['teacher_id']) ?>">レベル１</a>
+        <!-- <a href="level2.php?teacher_id=<?= urlencode($_SESSION['teacher_id']) ?>">レベル２</a> -->
+        <a href="teacher.php?teacher_id=<?= urlencode($_SESSION['teacher_id']) ?>">結果一覧</a>
+        <a href="curriculum.php?teacher_id=<?= urlencode($_SESSION['teacher_id']) ?>">カリキュラム</a>
     </nav>
 
     <div class="login" style="text-align: right; margin: 20px, 0;">
@@ -132,8 +296,8 @@ function mark($v)
     <!-- ＊＊＊＊＊＊＊＊編集モード ここから＊＊＊＊＊＊＊＊ -->
     <?php if ($edit_mode): ?>
         <form method="POST" action="update1.php">
+            <input type="hidden" name="id" value="<?= h($row['id']) ?>">
             <input type="hidden" name="student_id" value="<?= h($row['student_id']) ?>">
-
             <h3>Q1-1 聞いて答える問題</h3>
             <table>
                 <tr>
@@ -143,7 +307,7 @@ function mark($v)
                 <?php foreach ($q1_1_questions as $i => $q): ?>
                     <tr>
                         <td><?= h($q) ?></td>
-                        <td><input type="number" name="q1_1_<?= $i + 1 ?>" value="<?= h($q1_1_answers[$i]) ?>" min="0" max="3"></td>
+                        <td><input type="number" name="q1_1_<?= $i + 1 ?>" value="<?= h($q1_1_answers[$i]) ?>" min="0" max="6"></td>
                     </tr>
                 <?php endforeach; ?>
             </table>
@@ -154,33 +318,33 @@ function mark($v)
                     <th>問題</th>
                     <th>正誤</th>
                 </tr>
-                <!-- Q1-2（通常4問） -->
+
+                <!-- Q1-2 通常4問 -->
                 <?php for ($i = 0; $i < 4; $i++): ?>
                     <tr>
                         <td><?= h($q1_2_questions[$i]) ?></td>
                         <td>
                             <input type="number"
                                 name="q1_2_<?= $i + 1 ?>"
-                                value="<?= h($q1_2_answers[$i] ?? 0) ?>"
+                                value="<?= h($q1_2_normal_answers[$i] ?? 0) ?>"
                                 min="0" max="5">
                         </td>
                     </tr>
                 <?php endfor; ?>
 
-                <!-- Q1-2（しりとり5問） -->
+                <!-- Q1-2 しりとり5問 -->
                 <?php for ($i = 1; $i <= 5; $i++): ?>
                     <tr>
-                        <td><?= h($q1_2_questions[4 + $i - 1]) ?></td>
+                        <td><?= h($q1_2_questions[$i + 3]) ?></td>
                         <td>
                             <input type="number"
                                 name="q1_2_5_<?= $i ?>"
-                                value="<?= h($row["q1_2_5_$i"] ?? 0) ?>"
+                                value="<?= h($q1_2_shiritori_answers[$i - 1] ?? 0) ?>"
                                 min="0" max="3">
                         </td>
                     </tr>
                 <?php endfor; ?>
             </table>
-
             <h3>Q1-3 読んで答える問題</h3>
             <table>
                 <tr>
@@ -228,37 +392,51 @@ function mark($v)
             <!-- 再計算ボタン -->
             <!-- <p><button type="button" onclick="updateScore()">再計算</button></p> -->
 
-            <button type="submit">保存</button>
-            <a href="detail1.php?id=<?= h($row['id']) ?>">キャンセル</a>
+            <div class="edit-actions">
+                <button type="submit" class="save-btn">保存</button>
+                <a href="detail1.php?student_id=<?= h($row['student_id']) ?>" class="cancel-link">キャンセル</a>
+            </div>
         </form>
+
+
         <!-- ＊＊＊＊＊＊＊＊通常表示 ここから＊＊＊＊＊＊＊＊ -->
     <?php else: ?>
+
         <h3>Q1-1 聞いて答える</h3>
         <table>
             <tr>
                 <th>設問</th>
                 <th>評価</th>
             </tr>
-            <?php foreach ($q1_1_questions as $i => $q): ?>
+            <?php for ($i = 0; $i < count($q1_1_questions); $i++): ?>
                 <tr>
-                    <td><?= h($q) ?></td>
+                    <td><?= h($q1_1_questions[$i]) ?></td>
                     <td><?= mark($q1_1_answers[$i]) ?></td>
                 </tr>
-            <?php endforeach; ?>
+            <?php endfor; ?>
         </table>
 
-        <h3>Q1-2 書く</h3>
+        <h3>Q1-2 書く問題</h3>
         <table>
             <tr>
-                <th>ことば</th>
+                <th>問題</th>
                 <th>評価</th>
             </tr>
-            <?php foreach ($q1_2_questions as $i => $q): ?>
+            <!-- 通常4問 -->
+            <?php for ($i = 0; $i < 4; $i++): ?>
                 <tr>
-                    <td><?= h($q) ?></td>
-                    <td><?= mark($q1_2_answers[$i]) ?></td>
+                    <td><?= h($q1_2_questions[$i]) ?></td>
+                    <td><?= mark($q1_2_normal_answers[$i]) ?></td>
                 </tr>
-            <?php endforeach; ?>
+            <?php endfor; ?>
+
+            <!-- しりとり5問 -->
+            <?php for ($i = 0; $i < 5; $i++): ?>
+                <tr>
+                    <td><?= h($q1_2_questions[$i + 4]) ?></td>
+                    <td><?= mark($q1_2_shiritori_answers[$i]) ?></td>
+                </tr>
+            <?php endfor; ?>
         </table>
 
         <h3>Q1-3 読んで答える</h3>
@@ -281,17 +459,28 @@ function mark($v)
             <?php endforeach; ?>
         </table>
 
-        <p>Q1-1：<?= h($row['q1_1_score']) ?>点　Q1-2：<?= h($row['q1_2_score']) ?>点　Q1-3：<?= h($row['q1_3_score']) ?>点　合計：<?= h($row['q1_total_score']) ?>点</p>
 
+        <p>
+            Q1-1：<?= h($row['q1_1_score']) ?>点<br>
+            Q1-2：<?= h($row['q1_2_score']) ?>点<br>
+            Q1-3：<?= h($row['q1_3_score']) ?>点<br>
+            合計：<?= h($row['q1_total_score']) ?>点
+        </p>
 
-        <a href="detail1.php?id=<?= h($row['id']) ?>&edit=1">修正</a>
-        <form action="delete.php" method="POST" onsubmit="return confirm('本当に削除しますか？');">
-            <input type="hidden" name="id" value="<?= h($row['id']) ?>">
-            <button type="submit">削除</button>
-        </form>
+        <div class="action-links">
+            <a href="detail1.php?student_id=<?= h($row['student_id']) ?>&edit=1" class="edit-btn">修正</a>
+
+            <div class="form-wrapper">
+                <form action="delete.php" method="POST" onsubmit="return confirm('本当に削除しますか？');">
+                    <input type="hidden" name="id" value="<?= h($row['id']) ?>">
+                    <button type="submit" class="delete-btn">削除</button>
+                </form>
+            </div>
+
+            <a href="teacher.php?teacher_id=<?= urlencode($_SESSION['teacher_id'] ?? '') ?>" class="back-btn">結果一覧に戻る</a>
+        </div>
     <?php endif; ?>
 
-    <a href="score.php">← スコア一覧に戻る</a>
     <script src="js/level1.js"></script>
 </body>
 

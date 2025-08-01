@@ -1,11 +1,5 @@
 <?php
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-session_start();
-require_once('./funcs.php');
+require_once(__DIR__ . '/auth_teacher.php'); // __DIR__で現在のディレクトリを取得して安全に読み込む
 
 $student_id = $_GET['student'] ?? ($_POST['student_id'] ?? '');
 $student_data = [];
@@ -149,14 +143,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </header>
 
     <!-- ナビゲーション -->
+    <?php if ($is_teacher): ?>
     <nav class="nav-bar">
-        <a href="level0.php">レベル０</a>
-        <a href="level1.php">レベル１</a>
-        <a href="level2.php">レベル２</a>
-        <a href="teacher.php">結果一覧</a>
-        <a href="curriculum.php">カリキュラム一覧</a>
-        <a href="score.php">管理者用</a>
+      <a href="level0.php?teacher_id=<?= urlencode($_SESSION['teacher_id'] ?? '') ?>">レベル０</a>
+      <a href="level1.php?teacher_id=<?= urlencode($_SESSION['teacher_id'] ?? '') ?>">レベル１</a>
+      <!-- <a href="level2.php?teacher_id=<?= urlencode($_SESSION['teacher_id'] ?? '') ?>">レベル２</a> -->
+      <a href="teacher.php?teacher_id=<?= urlencode($_SESSION['teacher_id'] ?? '') ?>">結果一覧</a>
+      <a href="curriculum.php?teacher_id=<?= urlencode($_SESSION['teacher_id'] ?? '') ?>">カリキュラム</a>
     </nav>
+    <div class="login" style="text-align: right; margin: 20px, 0;">
+      <a href="login.php">管理用ログイン</a>
+    </div>
+
+  <?php elseif ($is_admin): ?>
+    <nav class="nav-bar">
+      <a href="level0.php?admin_id=<?= urlencode($_SESSION['admin_id'] ?? '') ?>">レベル０</a>
+      <a href="level1.php?admin_id=<?= urlencode($_SESSION['admin_id'] ?? '') ?>">レベル１</a>
+      <a href="score.php?admin_id=<?= urlencode($_SESSION['admin_id'] ?? '') ?>">管理一覧</a>
+      <a href="curriculum.php?teacher_id=<?= urlencode($_SESSION['admin_id'] ?? '') ?>">カリキュラム</a>
+    </nav>
+    <div class="logout">
+      <a href="logout.php">ログアウト</a>
+    </div>
+    
+  <?php endif; ?>
     <main>
 
         <h2>レベルチェックーレベル1</h2>

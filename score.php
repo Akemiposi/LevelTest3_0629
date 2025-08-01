@@ -1,23 +1,41 @@
 <?php
-session_start();
-require_once('funcs.php'); // db_conn(), check_login() を含む共通関数
+require_once(__DIR__ . '/auth_teacher.php');
 
 // ログインチェック（未ログインなら login.php に飛ばす）
 check_login();
 
-// 管理者以外はアクセス不可
-if ($_SESSION['role'] !== 'admin') {
-  session_destroy();
-  header('Location: login.php');
-}
+// // 管理者以外はアクセス不可
+// if ($_SESSION['role'] !== 'admin') {
+//   session_destroy();
+//   header('Location: login.php');
+//   exit;
+// }
 
 $pdo = db_conn();
-// データ取得
-$sql = "SELECT * FROM gs_leveltest3_01 ORDER BY date DESC";
+
+// データ取得（生徒ごとの最新結果を1件ずつ取得）
+$sql = "
+    SELECT 
+        t.*, 
+        t.total_score, 
+        l.q1_total_score AS level1_score 
+    FROM gs_leveltest3_01 t
+    INNER JOIN (
+        SELECT student_id, MAX(date) AS max_date
+        FROM gs_leveltest3_01
+        GROUP BY student_id
+    ) latest
+        ON t.student_id = latest.student_id 
+       AND t.date = latest.max_date
+    LEFT JOIN leveltest_1 l
+        ON t.student_id = l.student_id
+    ORDER BY t.name ASC
+";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -57,12 +75,20 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   <!-- ナビゲーション -->
   <nav class="nav-bar">
-    <a href="level0.php">レベル０</a>
-    <a href="level1.php">レベル１</a>
-    <a href="level2.php">レベル２</a>
-    <a href="curriculum.php">カリキュラム一覧</a>
-    <a href="socre.php">全件一覧（管理用）</a>
+    <?php if ($is_teacher): ?>
+      <a href="level0.php?teacher_id=<?= urlencode($_SESSION['teacher_id'] ?? '') ?>">レベル０</a>
+      <a href="level1.php?teacher_id=<?= urlencode($_SESSION['teacher_id'] ?? '') ?>">レベル１</a>
+      <!-- <a href="level2.php?teacher_id=<?= urlencode($_SESSION['teacher_id'] ?? '') ?>">レベル２</a> -->
+      <a href="teacher.php?teacher_id=<?= urlencode($_SESSION['teacher_id'] ?? '') ?>">結果一覧</a>
+      <a href="curriculum.php?teacher_id=<?= urlencode($_SESSION['teacher_id'] ?? '') ?>">カリキュラム</a>
+    <?php elseif ($is_admin): ?>
+      <a href="level0.php?admin_id=<?= urlencode($_SESSION['admin_id'] ?? '') ?>">レベル０</a>
+      <a href="level1.php?admin_id=<?= urlencode($_SESSION['admin_id'] ?? '') ?>">レベル１</a>
+      <a href="score.php?admin_id=<?= urlencode($_SESSION['admin_id'] ?? '') ?>">管理一覧</a>
+      <a href="curriculum.php?teacher_id=<?= urlencode($_SESSION['admin_id'] ?? '') ?>">カリキュラム</a>
+    <?php endif; ?>
   </nav>
+
   <h1>テスト結果一覧</h1>
 
   <div class="logout">
@@ -87,9 +113,8 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <th>計画書</th>
     </tr>
 
-    <tr>
-      <?php foreach ($results as $row): ?>
-
+    <?php foreach ($results as $row): ?>
+      <tr>
         <td><?= h($row['date']) ?></td>
         <td><?= h($row['student_id']) ?></td>
         <td><?= h($row['school']) ?></td>
@@ -100,30 +125,25 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <td><?= h($row['language_code']) ?></td>
         <td><?= h($row['teacher_id']) ?></td>
         <td>
-          <a href="detail.php?id=<?= h($row['id']) ?>">
-            <?= isset($row['total_score']) ? h($row['total_score']) . '点' : '—' ?>
-          </a>
-        </td>
-
-        <td>
-          <a href="detail_q1.php?id=<?= h($row['id']) ?>">
-            <?= isset($row['q1_total_score']) ? h($row['q1_total_score']) . '点' : '—' ?>
-          </a>
-        </td>
-
-        <td>
-          <a href="detail_q2.php?id=<?= h($row['id']) ?>">
-            <?= isset($row['q2_total_score']) ? h($row['q2_total_score']) . '点' : '—' ?>
-          </a>
+          <?php if (!empty($row['total_score'])): ?>
+            <a href="detail.php?id=<?= h($row['id']) ?>"><?= h($row['total_score']) ?>点</a>
+          <?php else: ?> - <?php endif; ?>
         </td>
         <td>
-          <span class="logout-container">
-            <a href="plan.php?student_id=<?= h($row['student_id']) ?>" class="plan-button">発行</a>
-          </span>
+          <?php if (!empty($row['level1_score'])): ?>
+            <a href="detail1.php?student_id=<?= h($row['student_id']) ?>"><?= h($row['level1_score']) ?>点</a>
+          <?php else: ?> - <?php endif; ?>
         </td>
-    </tr>
-
-  <?php endforeach; ?>
+        <td>
+          <?php if (!empty($row['q2_total_score'])): ?>
+            <a href="detail2.php?id=<?= h($row['id']) ?>"><?= h($row['q2_total_score']) ?>点</a>
+          <?php else: ?> - <?php endif; ?>
+        </td>
+        <td>
+          <a href="plan.php?student_id=<?= h($row['student_id']) ?>" class="plan-button">発行</a>
+        </td>
+      </tr>
+    <?php endforeach; ?>
   </table>
 
   <p><a href="level0.php">← 戻る</a></p>

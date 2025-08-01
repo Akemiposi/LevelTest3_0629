@@ -16,29 +16,62 @@ h1 {
   letter-spacing: 0.05em;
 }
 
-/* ナビゲーションバー全体 */
+/* ナビゲーションバーのボタン統一デザイン */
 .nav-bar {
-  text-align: center;
-  margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
 }
 
-/* ボタン風ナビリンク */
 .nav-bar a {
-  display: inline-block;
-  margin: 5px 10px;
-  padding: 8px 16px;
-  background-color: #e0e0e0;
-  color: #333;
-  text-decoration: none;
-  font-weight: bold;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  transition: background-color 0.2s, color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    background-color: #e3f2fd; /* 薄いブルー */
+    color: #1565c0; /* 青系文字 */
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .nav-bar a:hover {
-  background-color: #8d8888;
-  color: #000;
+    background-color: #bbdefb;
+    color: #0d47a1;
+}
+
+/* 管理用ログインリンク */
+.login,
+.logout {
+    text-align: right;
+    margin: 0;
+}
+
+.login a,
+.logout a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 14px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    border-radius: 6px;
+    background-color: #ede7f6; /* 薄い紫 */
+    color: #6a1b9a; /* 紫系文字 */
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.login a:hover,
+.logout a:hover {
+    background-color: #d1c4e9;
+    color: #4a148c;
 }
 
 

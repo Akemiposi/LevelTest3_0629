@@ -71,15 +71,23 @@ $q0_3_answers = array_map(fn($i) => $row["q0_3_$i"], range(1, 3));
 
 
      <nav class="nav-bar">
-        <a href="level0.php">レベル０</a>
-        <a href="level1.php">レベル１</a>
-        <a href="level2.php">レベル２</a>
-        <a href="teacher.php">結果一覧</a>
-        <a href="curriculum.php">カリキュラム</a>
+        <?php if ($is_teacher): ?>
+            <a href="level0.php?teacher_id=<?= urlencode($_SESSION['teacher_id']) ?>">レベル０</a>
+            <a href="level1.php?teacher_id=<?= urlencode($_SESSION['teacher_id']) ?>">レベル１</a>
+            <!-- <a href="level2.php?teacher_id=<?= urlencode($_SESSION['teacher_id']) ?>">レベル２</a> -->
+            <a href="teacher.php?teacher_id=<?= urlencode($_SESSION['teacher_id']) ?>">結果一覧</a>
+            <a href="curriculum.php?teacher_id=<?= urlencode($_SESSION['teacher_id']) ?>">カリキュラム</a>
+        <?php elseif ($is_admin): ?>
+            <a href="level0.php?admin_id=<?= urlencode($_SESSION['admin_id']) ?>">レベル０</a>
+            <a href="level1.php?admin_id=<?= urlencode($_SESSION['admin_id']) ?>">レベル１</a>
+            <a href="score.php?admin_id=<?= urlencode($_SESSION['admin_id']) ?>">管理一覧</a>
+            <a href="curriculum.php?teacher_id=<?= urlencode($_SESSION['admin_id']) ?>">カリキュラム</a>
+        <?php endif; ?>
     </nav>
-    <div class="logout">
-    <a href="score.php">管理用</a>
-  </div>
+ <div class="login" style="text-align: right; margin: 20px, 0;">
+        <a href="login.php">管理用ログイン</a>
+    </div>
+
 
   <h1><?= h($row['name']) ?> さんの詳細結果</h1>
 

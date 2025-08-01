@@ -1,13 +1,21 @@
 <?php
 require_once('./funcs.php');
 
-
+$id = $_POST['id'] ?? '';
 $student_id = $_POST['student_id'] ?? '';
-if ($student_id === '') exit('student_id不正なID');
+
+if ($id === '') {
+    exit('idがありません');
+}
+if ($student_id === '') {
+    exit('student_id不正なIDです');
+}
+
 
 $pdo = db_conn();
+
+// POSTでもGETでもstudent_idがなければidから探す
 if ($student_id === '' && isset($_GET['id'])) {
-    // id から student_id を取得（古いURL互換）
     $stmt = $pdo->prepare("SELECT student_id FROM leveltest_1 WHERE id = :id");
     $stmt->bindValue(':id', intval($_GET['id']), PDO::PARAM_INT);
     $stmt->execute();
@@ -17,8 +25,9 @@ if ($student_id === '' && isset($_GET['id'])) {
     }
 }
 
+// 最終チェック
 if ($student_id === '') {
-    die('student_id不正なIDです');
+    exit('student_id不正なIDです');
 }
 
 // 入力データ取得
@@ -92,10 +101,9 @@ $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
 // 実行
 $status = $stmt->execute();
-
 if ($status) {
-    header("Location: detail1.php?id=$id");
-    exit();
+    header("Location: detail1.php?student_id=" . urlencode($_POST['student_id']));
+    exit;
 } else {
     sql_error($stmt);
 }
