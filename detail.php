@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once('./funcs.php');
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : -1;
@@ -71,10 +75,11 @@ $q0_3_answers = array_map(fn($i) => $row["q0_3_$i"], range(1, 3));
         <a href="level1.php">レベル１</a>
         <a href="level2.php">レベル２</a>
         <a href="teacher.php">結果一覧</a>
-        <a href="curriculum.php">カリキュラム一覧</a>
-        <a href="plan.php">指導計画書発行</a>
-         <a href="score.php">管理用</a>
-  </nav>
+        <a href="curriculum.php">カリキュラム</a>
+    </nav>
+    <div class="logout">
+    <a href="score.php">管理用</a>
+  </div>
 
   <h1><?= h($row['name']) ?> さんの詳細結果</h1>
 
@@ -183,11 +188,11 @@ $q0_3_answers = array_map(fn($i) => $row["q0_3_$i"], range(1, 3));
       </p>
     </form>
 
-    <!-- ＊＊＊＊＊＊＊＊編集モード ここまで＊＊＊＊＊＊＊＊ -->
+    <!-- ＊＊＊＊＊＊＊＊通常表示 ここから＊＊＊＊＊＊＊＊ -->
 
   <?php else: ?>
 
-    <!-- ＊＊＊＊＊＊＊＊通常表示 ここから＊＊＊＊＊＊＊＊ -->
+
     <p>
       日付：<?= h($row['date']) ?>　
       学校：<?= h($row['school']) ?>　

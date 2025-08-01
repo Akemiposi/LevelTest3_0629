@@ -1,10 +1,11 @@
 <?php
-session_start();
-require_once('./funcs.php');
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+session_start();
+require_once('./funcs.php');
+
 
 $student_id = $_GET['student'] ?? '';
 $student_data = [];
@@ -202,7 +203,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <a href="level2.php">レベル２</a>
     <a href="teacher.php">結果一覧</a>
     <a href="curriculum.php">カリキュラム一覧</a>
-    <a href="plan.php">指導計画書発行</a>
     <a href="score.php">管理者用</a>
   </nav>
   <main>
@@ -239,39 +239,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input type="text" name="gender" id="gender" class="short"
             value="<?= h($student_data['gender'] ?? '') ?>">
 
-
-
-          <!-- <label for="name">学校名：</label>
-          <input type="text" name="school" id="name" class="long" required />
-
-          <label for="year"></label>
-          <input type="text" name="year" id="year" class="short" required />年
-
-          <label for="class"></label>
-          <input
-            type="text"
-            name="class"
-            id="class"
-            class="short"
-            required />組
-        </div>
-
-        <div class="inline-field">
-          <label for="name">名　前：</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            class="long"
-            required />
-
-          <label for="gender">性別：</label>
-          <input
-            type="text"
-            name="gender"
-            id="gender"
-            class="short"
-            required /> -->
 
           <div style="display: flex; align-items: center; gap: 8px;">
             <label for="date">実施日：</label>

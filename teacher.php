@@ -15,7 +15,9 @@ $pdo = db_conn();
 
 // 生徒ごとの最新結果を1件ずつ取得
 $sql = "
-    SELECT t.*
+    SELECT 
+        t.*, 
+        l.q1_total_score AS level1_score
     FROM gs_leveltest3_01 t
     INNER JOIN (
         SELECT student_id, MAX(date) AS max_date
@@ -23,11 +25,13 @@ $sql = "
         WHERE teacher_id = ?
         GROUP BY student_id
     ) latest
-    ON t.student_id = latest.student_id AND t.date = latest.max_date
+        ON t.student_id = latest.student_id AND t.date = latest.max_date
+    LEFT JOIN leveltest_1 l
+        ON t.student_id = l.student_id AND l.teacher_id = ?
     ORDER BY t.name ASC
 ";
 $stmt = $pdo->prepare($sql);
-$stmt->execute([$teacher_id]);
+$stmt->execute([$teacher_id, $teacher_id]);
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -107,6 +111,22 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .logout-button:hover {
             background-color: #d32f2f;
         }
+
+        .plan-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4275aaff;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .plan-button:hover {
+            background-color: #194a7eff;
+        }
     </style>
 
 
@@ -123,10 +143,8 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <a href="level0.php">レベル０</a>
         <a href="level1.php">レベル１</a>
         <a href="level2.php">レベル２</a>
-        <a href="teacher.php">講師用ページ</a>
+        <a href="teacher.php">結果一覧</a>
         <a href="curriculum.php">カリキュラム一覧</a>
-        <a href="plan.php">指導計画書発行</a>
-        <a href="score.php">管理者用</a>
     </nav>
 
     <!-- メイン -->
@@ -150,6 +168,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <th>レベル０</th>
                         <th>レベル１</th>
                         <th>レベル２</th>
+                        <th>計画書</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -170,14 +189,20 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <?php else: ?> - <?php endif; ?>
                             </td>
                             <td>
-                                <?php if (isset($row['q1_total_score'])): ?>
-                                    <a href="detail_q1.php?id=<?= h($row['id']) ?>"><?= h($row['q1_total_score']) ?>点</a>
+                                <?php if (isset($row['total_score'])): ?>
+                                    <a href="detail1.php?student_id=<?= h($row['student_id']) ?>"><?= h($row['level1_score']) ?>点
+                                    </a>
                                 <?php else: ?> - <?php endif; ?>
                             </td>
                             <td>
                                 <?php if (isset($row['q2_total_score'])): ?>
-                                    <a href="detail_q2.php?id=<?= h($row['id']) ?>"><?= h($row['q2_total_score']) ?>点</a>
+                                    <a href="detail2.php?id=<?= h($row['id']) ?>"><?= h($row['q2_total_score']) ?>点</a>
                                 <?php else: ?> - <?php endif; ?>
+                            </td>
+                            <td>
+                                <span class="logout-container">
+                                    <a href="plan.php?student_id=<?= h($row['student_id']) ?>" class="plan-button">発行</a>
+                                </span>
                             </td>
                         </tr>
                     <?php endforeach; ?>

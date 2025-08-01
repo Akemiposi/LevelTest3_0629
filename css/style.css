@@ -1,85 +1,74 @@
-/* 全体の基本設定 */
+
+/* Material Design風 全体設定 */
 body {
-  font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
-  line-height: 1.6;
-  background-color: #f9f9f9;
-  color: #333;
-  padding: 20px;
+  font-family: 'Roboto', 'Noto Sans JP', sans-serif;
+  background-color: #f5f5f5;
+  color: #212121;
   margin: 0;
+  padding: 0;
 }
 
-/* 中央寄せ＋白背景カード風 */
 main {
   max-width: 960px;
-  margin: 0 auto;
-  background: #fff;
-  padding: 30px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  margin: 3rem auto;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* ナビゲーションバー全体 */
 .nav-bar {
   text-align: center;
-  margin: 20px auto;
+  margin: 1rem 0;
 }
 
-/* ボタン風ナビリンク */
 .nav-bar a {
   display: inline-block;
-  margin: 5px 10px;
-  padding: 8px 16px;
-  background-color: #e0e0e0;
-  color: #333;
+  margin: 0.25rem 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  color: #1976d2;
+  background-color: #e3f2fd;
+  border-radius: 4px;
   text-decoration: none;
-  font-weight: bold;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .nav-bar a:hover {
-  background-color: #8d8888;
-  color: #000;
+  background-color: #bbdefb;
 }
 
-
-/* 見出し */
 h2 {
-  font-size: 2rem;
+  font-size: 1.75rem;
   text-align: center;
-  margin-bottom: 30px;
-  color: #2c3e50;
+  margin-bottom: 2rem;
+  color: #0d47a1;
 }
 
-/* フィールドセット（枠付きブロック） */
 fieldset {
-  margin-bottom: 30px;
-  border: 2px solid #ccc;
+  border: 1px solid #e0e0e0;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
   border-radius: 8px;
-  padding: 20px;
 }
 
-/* フィールドセットのタイトル */
 legend {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: #2c3e50;
-  padding: 0 10px;
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #212121;
 }
 
-/* テキスト・日付入力 */
 .inline-field {
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-wrap: wrap; /* スマホ対応 */
-  margin-bottom: 15px;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
 }
 
 .inline-field label {
+  font-weight: 500;
   white-space: nowrap;
-  font-weight: bold;
 }
 
 .inline-field input.long {
@@ -93,230 +82,111 @@ legend {
 
 input[type="text"],
 input[type="date"] {
-  margin: 5px 0 15px;
-  padding: 8px 12px;
-  border: 1px solid #aaa;
-  border-radius: 5px;
-  width: 200px;
+  margin: 0.25rem 0;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #bdbdbd;
+  border-radius: 4px;
   font-size: 1rem;
+  background-color: #fff;
+  transition: border-color 0.3s;
 }
 
-/* テーブルの設定 */
+input[type="text"]:focus,
+input[type="date"]:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
-}
-
-th,
-td {
-  border: 1px solid #ccc;
-  padding: 12px;
-  text-align: left;
+  margin-top: 1rem;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
 th {
-  background-color: #f0f0f0;
-  font-weight: bold;
+  background-color: #eeeeee;
+  color: #424242;
+  font-weight: 600;
+  padding: 0.75rem;
   text-align: center;
 }
 
-/* 回答ボタンのグループ */
+td {
+  border-top: 1px solid #e0e0e0;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+
+tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
 .buttonGroup {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
-  height: 100%;
-  padding: 8px 0;
+  gap: 1rem;
+  padding: 0.5rem 0;
 }
 
-/* 回答ボタン */
 button.answerBtn {
-  padding: 10px 20px;
-  min-width: 90px;
-  border: 2px solid #888;
-  border-radius: 6px;
-  background-color: #f5f5f5;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.2s ease;
-  text-align: center;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  border: none;
+  background-color: #e0e0e0;
+  color: #212121;
+  transition: background-color 0.2s;
 }
 
 button.answerBtn:hover {
-  background-color: #eee;
+  background-color: #d5d5d5;
 }
 
 button.answerBtn.selected {
-  background-color: #007bff;
+  background-color: #1976d2;
   color: white;
-  border-color: #007bff;
 }
 
-/* 提出ボタン */
 button[type="submit"] {
-  display: block;
-  margin: 30px auto 0;
-  padding: 12px 30px;
-  font-size: 1.2rem;
-  background-color: #2ecc71;
+  background-color: #43a047;
   color: white;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
   cursor: pointer;
+  margin-top: 2rem;
   transition: background-color 0.3s;
 }
 
 button[type="submit"]:hover {
-  background-color: #27ae60;
+  background-color: #388e3c;
 }
 
-/* フッター */
+ .plan-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4275aaff;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .plan-button:hover {
+            background-color: #194a7eff;
+        }
+
 footer {
   text-align: center;
-  padding: 20px 0;
+  padding: 2rem 0;
   font-size: 0.9rem;
-  color: #999;
+  color: #757575;
 }
-
-/* 翻訳関連 */
-label[for="language-select"] {
-  display: inline-block;
-  font-weight: bold;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  color: #333;
-}
-
-#language-select {
-  font-size: 1rem;
-  padding: 8px 12px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fdfdfd;
-  color: #333;
-}
-
-.translated-instruction {
-  background-color: #eaf4fe;
-  border-left: 6px solid #228be6;
-  padding: 10px 15px;
-  margin: 5px 0 15px 0;
-  border-radius: 8px;
-  line-height: 1.6;
-  font-size: 1rem;
-}
-
-.hiragana-table,
-.katakana-table {
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  table-layout: fixed;
-}
-
-
-.hiragana-table td,
-.katakana-table td {
-   width: 40px;
-  height: 40px;
-  font-size: 1.4rem;
-  text-align: center;
-  vertical-align: middle;
-  border: 1px solid #ccc;
-  padding: 0;
-}
-
-.toggle-cell {
-  font-family: "UD Digi Kyokasho NP-B", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-  line-height: 4rem;
-  text-align: center;
-  /* margin: 6px; */
-  cursor: pointer;
-  /* border-radius: 4px; */
-  user-select: none;
-  font-weight: bold;
-  vertical-align: middle;
-}
-
-/* grayセル用 */
-td.gray {
-  background-color: #ccc;
-  pointer-events: none;
-}
-
-/* 選択済み（青） */
-.toggle-cell.selected {
-  background-color: #4fa6f7;
-  color: #fff;
-}
-
-/* 未選択（赤） */
-/* .toggle-cell.unselected {
-  background-color: #f78c6b;
-  color: #111;
-} */
-
-/* 押せないマス（表示専用） */
-.toggle-cell.readonly {
-  cursor: default;
-}
-
-
-/* 修正・削除ボタン */
-.edit-btn {
-  display: inline-block;
-  padding: 6px 12px;
-  background-color: #2e7cb1;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 4px;
-  margin-right: 10px;
-}
-.edit-btn:hover {
-  background-color: #2980b9;
-}
-
-.delete-btn {
-  padding: 6px 12px;
-  background-color: #f86757;
-  color: white;
-  border: none;
-  border-radius: 4px;
-}
-.delete-btn:hover {
-  background-color: #9c3e33;
-}
-
-/* -----------level1------------------ */
-
-.itemBlock {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-width: 60px;
-  min-height: 120px; /* 全ブロックの高さをそろえる */
-}
-
-.itemImage {
-  width: auto;
-  height: 60px; /* 高さを固定 メガネの⚪︎×のズレ防止 */
-  margin-bottom: 4px;
-}
-
-/* q1_2_5の⚪︎×ボタン */
-.circleBtn, .crossBtn {
-  font-size: 18px !important;
-  padding: 4px 8px !important;
-  margin: 2px !important;
-  min-width: 32px !important;
-  min-height: 32px !important;;
-}
-
-
 

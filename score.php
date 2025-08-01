@@ -7,7 +7,8 @@ check_login();
 
 // 管理者以外はアクセス不可
 if ($_SESSION['role'] !== 'admin') {
-  exit('アクセス権限がありません（admin専用ページ）');
+  session_destroy();
+  header('Location: login.php');
 }
 
 $pdo = db_conn();
@@ -59,10 +60,8 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <a href="level0.php">レベル０</a>
     <a href="level1.php">レベル１</a>
     <a href="level2.php">レベル２</a>
-    <a href="score.php">結果一覧</a>
     <a href="curriculum.php">カリキュラム一覧</a>
-    <a href="plan.php">指導計画書発行</a>
-    <a href="login.php">講師用</a>
+    <a href="socre.php">全件一覧（管理用）</a>
   </nav>
   <h1>テスト結果一覧</h1>
 
@@ -85,6 +84,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <th>L0詳細</th>
       <th>L1詳細</th>
       <th>L2詳細</th>
+      <th>計画書</th>
     </tr>
 
     <tr>
@@ -116,7 +116,11 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?= isset($row['q2_total_score']) ? h($row['q2_total_score']) . '点' : '—' ?>
           </a>
         </td>
-
+        <td>
+          <span class="logout-container">
+            <a href="plan.php?student_id=<?= h($row['student_id']) ?>" class="plan-button">発行</a>
+          </span>
+        </td>
     </tr>
 
   <?php endforeach; ?>
